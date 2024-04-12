@@ -1,0 +1,83 @@
+---
+import type { Talk } from "../data/talks/talkList";
+
+type Props = Talk;
+
+const { title = "", url, date, eventName, ja = false } = Astro.props;
+---
+
+<div class="TalkLink__Container">
+  <div class="TalkLink__Url">
+    <h3 class="TalkLink__Title">
+      {title}
+    </h3>
+    <span class="TalkLink__Date">{date}</span>
+    {ja && <span class="TalkLink__Label">JP</span>}
+    <span class="TalkLink__Event">{eventName}</span>
+  </div>
+  {
+    url?.link && (
+      <a
+        class="TalkLink__Link"
+        target="_blank"
+        rel="noopener noreferrer"
+        href={url.link}
+      >
+        Link
+      </a>
+    )
+  }
+  {
+    url?.slide && (
+      <a target="_blank" rel="noopener noreferrer" href={url.slide}>
+        Slide
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .TalkLink__Container {
+    margin: 1rem 0;
+  }
+  .TalkLink__Url {
+    text-decoration: none;
+    margin-bottom: 4px;
+  }
+
+  a:hover {
+    opacity: 0.5;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .TalkLink__Title {
+    font-size: 1.5rem;
+    color: white;
+    margin: 0;
+  }
+
+  .TalkLink__Event {
+    color: #a7a7a7;
+  }
+
+  .TalkLink__Date {
+    color: #a7a7a7;
+    font-size: 1.2rem;
+  }
+
+  .TalkLink__Label {
+    font-size: 1rem;
+    padding: 0.3rem;
+    background-color: rgba(0, 12, 105, 0.3);
+    color: black;
+  }
+
+  .TalkLink__Link {
+    font-weight: 800;
+  }
+  @media screen and (max-width: 480px) {
+    .TalkLink__Title {
+      margin-bottom: 0.3rem;
+    }
+  }
+</style>

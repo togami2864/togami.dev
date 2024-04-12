@@ -1,0 +1,121 @@
+---
+import { formatLocalDate } from "@/utils/formatDate";
+import Layout from "@/layouts/Layout.astro";
+import { type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const blogPosts = await getCollection("posts");
+  return blogPosts.map((post) => ({
+    params: {
+      slug: post.slug,
+    },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+  <main>
+    <h1
+      class="Article__Title"
+      transition:name={post.data.title}
+      transition:animate="fade"
+    >
+      {post.data.title}
+    </h1>
+    <article>
+      <p
+        class="Article__Date"
+        transition:name={post.data.date.toISOString()}
+        transition:animate="fade"
+      >
+        {formatLocalDate(post.data.date)}
+      </p>
+      <!-- <Image
+        class="Article__Image"
+        src={post.data.image.src}
+        alt={post.data.image.alt}
+        loading="eager"
+        transition:name={post.data.title}
+        width="400"
+      /> -->
+      <section class="Article__Content">
+        <Content />
+      </section>
+    </article>
+    <a href="/posts" class="Article__BackLink">Back</a>
+  </main>
+</Layout>
+
+<style>
+  main {
+    padding: 5em;
+    margin: 0 auto !important;
+    max-width: 50rem;
+  }
+
+  .Article__Title {
+    text-align: center;
+    margin: 0;
+  }
+
+  .Article__Image {
+    border-radius: 0.75rem;
+    margin: 12px auto;
+    display: block;
+  }
+
+  .Article__Date {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-style: italic;
+    margin: 0;
+    text-align: center;
+  }
+
+  .Article__Content {
+    max-width: 48rem;
+    margin: 1rem auto;
+  }
+
+  .Article__BackLink {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    max-width: 48px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .Article__BackLink:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+    transition: width 0.2s ease-in-out;
+  }
+
+  @media (max-width: 480px) {
+    .Article__Title {
+      font-size: 2rem;
+      margin-top: 12px;
+    }
+
+    main {
+      padding: 0 1rem;
+    }
+  }
+</style>

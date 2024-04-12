@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+import TalkLink from "../components/TalkLink.astro";
+import { talk2022 } from "../data/talks/talkList";
+---
+
+<Layout title="Yoshiaki Togami | Talks">
+  <main class="Talk">
+    <section>
+      <h2>Talk</h2>
+      <article>
+        <h2 class="Talk__year">2022</h2>
+        {
+          talk2022.map((talk) => (
+            <TalkLink
+              url={talk.url}
+              title={talk.title}
+              date={talk.date}
+              eventName={talk.eventName}
+              ja={talk.ja}
+            />
+          ))
+        }
+      </article>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .Talk {
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  .Talk__year {
+    font-size: 1.5rem;
+  }
+
+  article {
+    margin: 3rem 0;
+  }
+
+  @media screen and (max-width: 480px) {
+    h1 {
+      font-size: 1.8rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style>

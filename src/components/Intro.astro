@@ -1,0 +1,73 @@
+---
+import { Image } from "astro:assets";
+import prodileImage from "../assets/img/ty.png";
+---
+
+<section class="Intro">
+  <Image
+    src={prodileImage}
+    alt="icon"
+    format="avif"
+    width={300}
+    height={300}
+    decoding="async"
+    loading="eager"
+    class="Intro__Image"
+  />
+  <h1 class="Intro__Heading">Hello👋</h1>
+  <div>
+    <p class="Intro__Text">
+      I'm <strong>Yoshiaki Togami</strong>, and I work as a frontend developer
+      in Tokyo.
+    </p>
+    <p class="Intro__Text">
+      I'm passionate about <strong>web development</strong>, <strong
+        >toolings</strong
+      >,
+      <strong>testing</strong>, and <strong>OSS</strong>.
+    </p>
+    <p class="Intro__Text">
+      Currently Maintainer team at <a href="https://github.com/biomejs"
+        >biomejs</a
+      >.
+    </p>
+  </div>
+</section>
+
+<style>
+  .Intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+  .Intro__Image {
+    border-radius: 90%;
+    animation: fadein 2s ease-in forwards;
+  }
+
+  @keyframes fadein {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .Intro__Text {
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 0;
+  }
+
+  .Intro__Text + .Intro__Text {
+    margin-top: 14px;
+  }
+  .Intro__Heading {
+    margin: 0;
+    font-weight: 1000;
+  }
+</style>

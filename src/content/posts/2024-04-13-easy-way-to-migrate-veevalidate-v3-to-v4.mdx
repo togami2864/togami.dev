@@ -1,0 +1,306 @@
+---
+title: "A Quick Guide to Migrating from VeeValidate v3 to v4 in Vue Applications"
+date: 2024-04-13
+description: "Learn how to easily migrate your Vue app from VeeValidate v3 to v4 without rewriting your entire codebase."
+---
+
+## Caution
+- This is not the officially recommended/supported method.
+- Assuming you are using VeeValidate v3 with nuxt2 and do not want to migrate your Option API to Composition API.
+- This guide is for people who want to quickly move to nuxt3 with minimal effort. In the long term, it's better to follow the recommended method for VeeValidate v4.
+
+## Review of V3
+[The sample repository can be found here.](https://github.com/togami2864/vv3-nuxt2-sample)
+
+In this sample application, a very simple registration form is implemented.
+The implementation is done using `ValidationProvider` and `ValidationObserver` as follows.
+
+```vue title="v3-sample.vue"
+<template>
+  <div class="Layout">
+    <ValidationObserver
+      ref="observer"
+      v-slot="{ failed }"
+      tag="form"
+      @submit.prevent="onSubmit"
+    >
+      <ValidationProvider v-slot="{ errors }" rules="required" class="Provider">
+        <label for="name">Name</label>
+        <input v-model="name" type="text" name="name" />
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <ValidationProvider v-slot="{ errors }" rules="required" class="Provider">
+        <label for="email">Email</label>
+        <input v-model="email" type="text" name="email" />
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <button type="submit" :disabled="failed">Submit</button>
+    </ValidationObserver>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
+
+export default Vue.extend({
+  name: 'IndexPage',
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
+  data() {
+    return {
+      name: '',
+      email: '',
+    }
+  },
+  methods: {
+    async onSubmit() {
+      const observer = this.$refs.observer as InstanceType<
+        typeof ValidationObserver
+      >
+      const isValid = await observer.validate()
+      if (!isValid) {
+        return
+      }
+      window.alert(`Form submitted => Name: ${this.name} Email: ${this.email}`)
+    },
+  },
+})
+</script>
+```
+
+In v3, each input tag is wrapped by a `ValidationProvider` to define the rules for field validation. By encapsulating these within a `ValidationObserver`, the entire form can be monitored. Additionally, the input tags are bound to reactive values defined in data using `v-model`.
+
+## VeeValidate V4
+
+In VeeValidate v4, there are mainly two validation methods.
+The first method, similar to v3, uses high-order components like [\<Form\>]() and [\<Field\>]() are provided.
+
+```vue title="v4-sample.vue"
+<template>
+  <Form v-slot="{ values }">
+    <Field name="email" type="email" />
+    <Field name="password" type="password" />
+    <!-- print form values -->
+    <pre>{{ values }}</pre>
+  </Form>
+</template>
+
+<script setup>
+import { Form, Field } from 'vee-validate';
+</script>
+```
+
+The second method uses the Composition API. At the Field level, you can use useField, and at the Form level, you can perform validation by passing a schema to [useForm](https://vee-validate.logaretm.com/v4/api/use-form/).
+
+Since the implementation using the Composition API significantly changes the codebase compared to v3, this guide will adopt the first method using high-order components.
+
+## Migration
+
+[The sample repository can be found here.](https://github.com/togami2864/vv4-nuxt3-sample)
+
+The easiest way to migrate from v3 to v4 is to reproduce v3's `ValidationProvider` and `ValidationObserver` using v4's Form and Field. This allows most of the migration to be done by just replacing the code.
+
+### Reproducing ValidationObserver
+
+Although the name has changed significantly, the Form component in v4 is actually almost the same as the ValidationObserver in v3. By simply replacing ValidationObserver with Form, most of the migration is complete.
+
+There are some minor changes needed to align with v4. This guide will address these points in the sample provided.
+
+- Since the default rendering tag is \<form\>, there's no need to specify tag="form". [[source]](https://vee-validate.logaretm.com/v4/api/form/#:~:text=The%20%3CForm%20/%3E%20component%20is%20like%20its%20name%2C%20a%20simple%20HTML%20form%20but%20with%20a%20few%20adjustments%20and%20DX%20improvements%2C%20By%20default%20it%20will%20render%20a%20native%20HTML%20form%20element.)
+- The `failed` prop has been deprecated, and an alternative is required. [[source]](https://vee-validate.logaretm.com/v4/api/form/#:~:text=meta%3A%20FormMeta,inside%20the%20form.)
+
+Taking the above into consideration, the following custom component was created.
+
+```vue title="ValidationObserver.vue"
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Form as VeeForm } from 'vee-validate';
+
+const $emit = defineEmits(['submit']);
+const observer = ref<InstanceType<typeof VeeForm> | null>(null);
+
+const onSubmit = () => {
+  const observerRef = observer.value;
+  if (!observerRef || !observerRef.getMeta().valid) {
+    return;
+  }
+  const values = observerRef.getValues();
+  $emit('submit', values);
+};
+</script>
+
+<template>
+  <VeeForm
+    ref="observer"
+    v-slot="{ errors, meta }"
+    class="Form"
+    @submit="onSubmit"
+  >
+    <slot :failed="!meta.valid && !!errors" />
+  </VeeForm>
+</template>
+
+<style>
+.Form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+</style>
+```
+
+Using this component, you can almost entirely migrate by replacing the existing code.
+
+```vue title="v4.vue"
+<template>
+  <div class="Layout">
+    <ValidationObserver
+      v-slot="{ failed }"
+      @submit.prevent="onSubmit"
+    >
+      <ValidationProvider v-slot="{ errors }" rules="required" class="Provider">
+        <label for="name">Name</label>
+        <input v-model="name" type="text" name="name" />
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+      <ValidationProvider v-slot="{ errors }" rules="required" class="Provider">
+        <label for="email">Email</label>
+        <input v-model="email" type="text" name="email" />
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+      <button type="submit" :disabled="failed">Submit</button>
+    </ValidationObserver>
+  </div>
+</template>
+
+<script lang="ts">
+import ValidationObserver from "./ValidationObserver.vue"
+</script>
+```
+
+### Reproducing ValidationProvider
+
+In v3, ValidationProvider performed field-level validation simply by encapsulating the input. However, there is no direct equivalent in v4. Some customization is necessary to create a custom component.
+
+This guide will use the Field component from v4. The official documentation provides an example that treats Field as a substitute for the input tag and combines it with ErrorMessage as follows.
+
+```vue title="v4-sample.vue"
+<Field name="field" :rules="isRequired" />
+<ErrorMessage name="field" />
+```
+
+There are also examples of encapsulating arbitrary components and binding values taken out from the slot using v-bind.
+
+```vue title="v4-sample.vue"
+<Field name="password" v-slot="{ field }">
+  <input v-bind="field" type="password" />
+  <p>Hint: Enter a secure password you can remember</p>
+</Field>
+```
+
+Additionally, I found that the following usage is also possible by reading the source code.(Not detailed in the official documentation)
+
+```vue title="v4-sample.vue"
+<Field name="name" v-model="name">
+  <input v-model="name" type="text" name="name"/>
+</Field>
+```
+
+By attaching v-model to both the input (or any custom component) and Field, you can perform validation on any custom component. This method is advantageous as it requires minimal modification of the related logic in the script tag when using the Option API, hence we adopt this method.
+
+To further reduce the amount of code to be changed, we created a component named `ValidationProvider`.
+
+```vue title="ValidationProvider.vue"
+<script setup lang="ts">
+import type { RuleExpression } from 'vee-validate';
+import { Field as VeeField} from 'vee-validate';
+
+const props = defineProps<{
+  name: string;
+  label?: string;
+  rules: RuleExpression<unknown>;
+}>();
+</script>
+
+<template>
+  <VeeField
+    v-slot="{ errors, value, meta, validate }"
+    :name="props.name"
+    :label="props.label || props.name"
+    :rules="props.rules"
+  >
+    <slot
+      :errors="errors"
+      :hasError="!meta.valid && errors.length > 0"
+      :value="value"
+      :meta="meta"
+      :validate="validate"
+    />
+  </VeeField>
+</template>
+```
+
+Using this component, you can perform validation simply by binding the corresponding data to v-model in the ValidationProvider. The final code looks like this:
+
+```vue title="v4.vue"
+<template>
+  <div class="Layout">
+    <ValidationObserver
+      v-slot="{ failed }"
+      @submit="onSubmit"
+    >
+      <ValidationProvider name="name" v-model="name" v-slot="{ errors, hasError }" rules="required" >
+        <label for="name">Name</label>
+        <input v-model="name" type="text" name="name" :class="{Error: hasError}"/>
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+      <ValidationProvider name="email" v-model="email" v-slot="{ errors, hasError }" rules="required|email">
+        <label for="email">Email</label>
+        <input v-model="email" type="text" name="email" :class="{Error: hasError}"/>
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+      <button type="submit" :disabled="failed">Submit</button>
+    </ValidationObserver>
+  </div>
+</template>
+
+<script lang="ts">
+import ValidationObserver from './ValidationObserver.vue';
+import ValidationProvider from './ValidationProvider.vue';
+
+export default defineComponent({
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
+  data() {
+    return {
+      name: '',
+      email: '',
+    }
+  },
+  methods: {
+    async onSubmit() {
+      window.alert(`Form submitted => Name: ${this.name} Email: ${this.email}`)
+    },
+  },
+})
+</script>
+```
+
+Although this is a simple sample, it shows you can port to VeeValidate v4 with only replacement and minor fixes.
+The sample repository can be found here.
+
+## Final Thoughts
+By using the **\<Form>** and **\<Field>** components from v4, you can mimic the `ValidationObserver` and `ValidationProvider` from v3, which allows for minimal changes during the migration.
+
+However, as mentioned at the beginning, **this is not the officially recommended method.**
+The purpose of this migration is to provide a simple way to migrate v3 to v4 and get your application running under the conditions that you are using VeeValidate v3 and do not want to migrate from Option API to Composition API.
+
+ If you have the time and resources, it is better to fully adopt the vee-validate v4 way for a longer-term benefit.

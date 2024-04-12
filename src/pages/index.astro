@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Intro from "../components/Intro.astro";
+import SNSLinks from "../components/SNSLinks.astro";
+---
+
+<Layout title="Yoshiaki Togami">
+  <main class="Home">
+    <Intro />
+    <SNSLinks />
+  </main>
+</Layout>
+
+<style>
+  .Home {
+    padding: 2rem;
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+  @media (max-width: 480px) {
+    .Home {
+      min-width: 10rem;
+      padding: 1rem;
+      margin-top: 10px;
+    }
+  }
+</style>

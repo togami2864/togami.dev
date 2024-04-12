@@ -1,0 +1,82 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { formatLocalDate } from "../utils/formatDate";
+
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("posts");
+---
+
+<Layout title="Yoshiaki Togami | Posts">
+  <main class="Posts__Container">
+    <h2>Posts</h2>
+    <div class="Posts__List">
+      {
+        allPosts.map((content) => (
+          <>
+            <a
+              href={`/posts/${content.slug}`}
+              transition:name={content.data.title}
+            >
+              <h3 class="Posts__Title">{content.data.title}</h3>
+            </a>
+            <p
+              class="Posts__Date"
+              transition:name={content.data.date.toISOString()}
+            >
+              {formatLocalDate(content.data.date)}
+            </p>
+          </>
+        ))
+      }
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .Posts__Container {
+    max-width: 40rem;
+    margin: 12px auto;
+  }
+
+  .Posts__List {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 2rem 0;
+  }
+
+  .Posts__Title {
+    margin-bottom: 0.3rem;
+    font-size: 1.5rem;
+  }
+  .Posts__Date {
+    margin: 0;
+  }
+  @media (max-width: 480px) {
+    .Posts__Title {
+      font-size: 1rem;
+    }
+    .Posts__Container {
+      padding: 0 1.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .Posts__List {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .Posts__List {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .Posts__List {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,0 +1,36 @@
+---
+import LinkIcon from "../components/LinkIcon.astro";
+import Github from "./sns/Github.astro";
+import X from "./sns/X.astro";
+import LinkedIn from "./sns/LinkedIn.astro";
+---
+
+<section class="SnsLinks">
+  <h2 class="SnsLinks__Heading">Links</h2>
+  <div class="SnsLinks__Icons">
+    <LinkIcon href="https://github.com/togami2864">
+      <Github />
+    </LinkIcon>
+
+    <LinkIcon href="https://twitter.com/ty_dev0">
+      <X />
+    </LinkIcon>
+
+    <LinkIcon href="https://www.linkedin.com/in/togami2864/">
+      <LinkedIn />
+    </LinkIcon>
+  </div>
+</section>
+
+<style>
+  .SnsLinks {
+    padding: 2rem;
+  }
+  .SnsLinks__Heading {
+    margin-top: 0;
+  }
+  .SnsLinks__Icons {
+    display: flex;
+    align-items: center;
+  }
+</style>

@@ -1,0 +1,46 @@
+---
+import "../styles/global.css";
+import { ViewTransitions } from "astro:transitions";
+import Header from "../components/Header.astro";
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="/src/assets/img/ty.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ViewTransitions />
+  </head>
+  <body>
+    <div class="layout">
+      <Header />
+      <slot />
+    </div>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      .layout {
+        box-sizing: border-box;
+        height: 100vh;
+      }
+
+      @media (max-width: 480px) {
+        .layout {
+        }
+      }
+    </style>
+  </body>
+</html>
