@@ -18,6 +18,17 @@ const { title } = Astro.props;
     <meta name="twitter:card" content="summary" />
     <meta property="og:image" content="/src/assets/img/ty.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script
+      type="text/partytown"
+      src="https://www.googletagmanager.com/gtag/js?id=G-17R93T4KP0"></script>
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-17R93T4KP0");
+    </script>
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <ViewTransitions />
