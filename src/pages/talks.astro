@@ -6,7 +6,6 @@ import { talk2022 } from "../data/talks/talkList";
 
 <Layout title="Yoshiaki Togami | Talks">
   <main class="Talk">
-    <section>
       <h2>Talk</h2>
       <article>
         <h2 class="Talk__year">2022</h2>
@@ -22,14 +21,13 @@ import { talk2022 } from "../data/talks/talkList";
           ))
         }
       </article>
-    </section>
   </main>
 </Layout>
 
 <style>
   .Talk {
     max-width: 40rem;
-    margin: 0 auto;
+    margin: 12px auto;
   }
 
   .Talk__year {
@@ -40,12 +38,13 @@ import { talk2022 } from "../data/talks/talkList";
     margin: 3rem 0;
   }
 
-  @media screen and (max-width: 480px) {
-    h1 {
-      font-size: 1.8rem;
+  @media (max-width: 480px) {
+    .Talk__Title {
+      font-size: 1rem;
     }
-    h2 {
-      font-size: 1.5rem;
+    .Talk {
+      padding: 0 1.5rem;
     }
   }
+
 </style>
