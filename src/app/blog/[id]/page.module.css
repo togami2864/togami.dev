@@ -1,0 +1,220 @@
+.main {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.article {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.eyecatch {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1200 / 630;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.header {
+  margin-bottom: 3rem;
+}
+
+.date {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+
+/* Article content styles */
+.content {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.content p {
+  margin-bottom: 1.5rem;
+}
+
+.content a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.content a:hover {
+  opacity: 0.7;
+}
+
+.content ul,
+.content ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.content ul {
+  list-style: disc;
+}
+
+.content ol {
+  list-style: decimal;
+}
+
+.content li {
+  margin-bottom: 0.5rem;
+}
+
+.content code {
+  font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.875em;
+  background: var(--bg-tertiary);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+.content pre {
+  padding: 1.25rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.content pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* Code block with filename */
+.content :global(.code-block) {
+  margin-bottom: 1.5rem;
+}
+
+.content :global(.code-block) pre {
+  margin-bottom: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.content :global(.code-filename) {
+  background: #1e1e1e;
+  color: #a0a0a0;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom: 1px solid #333;
+}
+
+.content blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.content figure {
+  margin: 1.5rem 0;
+}
+
+.content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.backLink {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: var(--text-primary);
+}
+
+/* Mobile styles */
+@media (max-width: 640px) {
+  .main {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .eyecatch {
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .content {
+    font-size: 0.9375rem;
+  }
+
+  .content h2 {
+    font-size: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .content h3 {
+    font-size: 1.125rem;
+  }
+
+  .content pre {
+    padding: 1rem;
+    border-radius: 6px;
+    font-size: 0.8125rem;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+  }
+}
