@@ -34,5 +34,12 @@ export const links: Link[] = [
     url: "https://nextwebconf.connpass.com/event/300174/",
     platform: "other",
     publishedAt: "2023-12-16",
+  },
+  {
+    "id": "5",
+    title: "TypeScript Compiler が型チェックをするまでを追う",
+    url: "https://zenn.dev/togami2864/articles/5b6c80cf913b7a",
+    platform: "zenn",
+    publishedAt: "2025-12-18",
   }
 ];
