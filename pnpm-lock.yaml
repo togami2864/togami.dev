@@ -11,6 +11,9 @@ importers:
       '@shikijs/rehype':
         specifier: ^3.21.0
         version: 3.21.0
+      '@types/hast':
+        specifier: ^3.0.4
+        version: 3.0.4
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
@@ -41,6 +44,9 @@ importers:
       unified:
         specifier: ^11.0.5
         version: 11.0.5
+      unist-util-visit:
+        specifier: ^5.0.0
+        version: 5.0.0
     devDependencies:
       '@textlint-ja/textlint-rule-preset-ai-writing':
         specifier: ^1.6.1

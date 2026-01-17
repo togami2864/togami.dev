@@ -7,7 +7,21 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeShiki from "@shikijs/rehype";
+import { visit } from "unist-util-visit";
+import type { Root, Element } from "hast";
 import type { Post } from "@/types";
+
+function rehypeImageAttrs() {
+  return (tree: Root) => {
+    visit(tree, "element", (node: Element) => {
+      if (node.tagName === "img") {
+        node.properties = node.properties || {};
+        node.properties.loading = "eager";
+        node.properties.decoding = "sync";
+      }
+    });
+  };
+}
 
 const postsDirectory = path.join(process.cwd(), "content/posts");
 
@@ -27,6 +41,7 @@ async function markdownToHtml(markdown: string): Promise<string> {
     .use(rehypeShiki, {
       theme: "github-dark",
     })
+    .use(rehypeImageAttrs)
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(markdown);
 
