@@ -1,4 +1,4 @@
-import { getPosts } from "@/lib/microcms";
+import { getPosts } from "@/lib/posts";
 import { links } from "@/data/links";
 
 export const dynamic = "force-static";

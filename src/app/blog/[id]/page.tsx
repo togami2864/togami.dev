@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getPosts, getPostById } from "@/lib/microcms";
+import { getPosts, getPostById } from "@/lib/posts";
 import styles from "./page.module.css";
 
 type Props = {
@@ -28,10 +28,10 @@ export default async function BlogPostPage({ params }: Props) {
       <article className={styles.article}>
         {post.eyecatch && (
           <Image
-            src={post.eyecatch.url}
+            src={post.eyecatch}
             alt=""
-            width={post.eyecatch.width}
-            height={post.eyecatch.height}
+            width={1200}
+            height={630}
             className={styles.eyecatch}
             priority
           />

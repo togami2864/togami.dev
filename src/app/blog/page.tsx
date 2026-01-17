@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getPosts } from "@/lib/microcms";
+import { getPosts } from "@/lib/posts";
 import { links } from "@/data/links";
 import { ArticleIcon } from "@/components/icons/ArticleIcon";
 import { ExternalIcon } from "@/components/icons/ExternalIcon";

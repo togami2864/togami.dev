@@ -1,12 +1,20 @@
-import type { MicroCMSImage, MicroCMSListContent } from "microcms-js-sdk";
-
 export type Category = {
+  id: string;
   name: string;
-} & MicroCMSListContent;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  revisedAt: string;
+};
 
 export type Post = {
+  id: string;
   title: string;
   content: string;
-  eyecatch?: MicroCMSImage;
+  eyecatch?: string;
   category?: Category;
-} & MicroCMSListContent;
+  createdAt: string;
+  updatedAt?: string;
+  publishedAt: string;
+  revisedAt?: string;
+};

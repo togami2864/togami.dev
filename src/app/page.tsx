@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getPosts } from "@/lib/microcms";
+import { getPosts } from "@/lib/posts";
 import { links } from "@/data/links";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { BlueskyIcon } from "@/components/icons/BlueskyIcon";
