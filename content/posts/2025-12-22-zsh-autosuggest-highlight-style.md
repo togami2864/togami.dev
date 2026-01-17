@@ -17,10 +17,10 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=214,bold'
 
 ## Before
 
-![変更前](/images/posts/zsh-autosuggest-highlight-style/before.png)
+![変更前](/images/posts/2025-12-22-zsh-autosuggest-highlight-style/before.png)
 
 ## After
 
-![変更後](/images/posts/zsh-autosuggest-highlight-style/after.png)
+![変更後](/images/posts/2025-12-22-zsh-autosuggest-highlight-style/after.png)
 
 かなり見やすくなった!
