@@ -5,9 +5,9 @@ publishedAt: "2025-12-22"
 category: "tech"
 ---
 
-WezTermを使っており若干透過させる設定を入れている。その上に基本ダークモードなのでzsh-autosuggestionの灰色のauto completeと相性が悪く結構視認性が悪かった。そこでとにかく補完を目立たせるための設定を探した。
+WezTerm を使っており若干透過させる設定を入れています。その上に基本ダークモードなので zsh-autosuggestion の灰色の auto complete と相性が悪く、視認性も低かった。
 
-`ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE`という設定で行けるようなので試してみた。
+そこでとにかく補完を目立たせるための設定を探したところ`ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE`で行けるようなので試してみた。
 
 `zsh-autosuggestions.zsh`をロードした後にハイライトの色を変えればできる。
 
@@ -15,4 +15,12 @@ WezTermを使っており若干透過させる設定を入れている。その�
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=214,bold'
 ```
 
-かなり見やすくなった。
+## Before
+
+![変更前](/images/posts/zsh-autosuggest-highlight-style/before.png)
+
+## After
+
+![変更後](/images/posts/zsh-autosuggest-highlight-style/after.png)
+
+かなり見やすくなった!

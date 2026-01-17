@@ -7,18 +7,18 @@ category: "tech"
 
 Webkit の WebDriver の wpt を動かすことまできたのでメモ。
 
+## 追記(20260114)
+従来の flatpak sdk 自体がリポジトリから削除されて別のものになったのでそのあたりのの記述は古くなっている
+
 ## 環境
 
 - OS
-  Ubuntu 24.04.3
-
+  - Ubuntu 24.04.3
 - メモリ
-  64GB
-
+  - 64GB
 - CPU
-  AMD Ryzen 9
-  物理8コア / 16スレッド
-
+  - AMD Ryzen 9
+  - 物理8コア / 16スレッド
 - エディタ
   VSCode 1.105.1
 
@@ -101,3 +101,4 @@ self.origin = os.environ.get('WEBKIT_SDK_ORIGIN', 'webkit')
 ---
 
 ここまでで一ヶ月！！
+

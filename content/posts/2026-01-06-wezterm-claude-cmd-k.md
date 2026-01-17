@@ -5,7 +5,14 @@ publishedAt: "2026-01-06"
 category: "tech"
 ---
 
-WezTerm で `Cmd+k` を押すと小さい入力欄が出て、そこに「やりたいこと」を書くと Claude Code が zsh の1行コマンドにしてくれて、そのままターミナルの入力欄に貼り付ける（実行はしない）ようにした。ようはCursorのcmd + kのパクリである
+WezTerm で `Cmd+k` を押すと小さい入力欄が出てプロンプトを元に Claude Code が zsh の1行コマンドにしてくれて、そのままターミナルの入力欄に貼り付けられるようにした。ようは Cursor の `Cmd+k` のパクリである
+
+## 完成系
+
+![demo](/images/posts/2026-01-06-wezterm-claude-cmd-k/demo.gif)
+
+
+## 仕組み
 
 やっていることは単純で、
 
@@ -14,13 +21,13 @@ WezTerm で `Cmd+k` を押すと小さい入力欄が出て、そこに「やり
 - 返答から1行コマンドだけ抜き出して `SendString` で貼り付ける（改行なし）
 - 実行中は左ステータスでスピナーを回して目立たせる
 
-設定は `~/.config/wezterm/wezterm.lua` に入れた。`claude` のパスは `which claude` の結果をそのまま使う。
+`claude` のパスは `which claude` の結果をそのまま使った。
 
 ```lua
 local wezterm = require 'wezterm';
 local act = wezterm.action
 
-local claude_bin = "/Users/togami/.local/bin/claude"
+local claude_bin = "<path to claude>" -- set this to the full path of your claude executable
 local claude_model = "claude-haiku-4-5-20251001"
 
 keys = {
@@ -54,14 +61,14 @@ keys = {
 }
 ```
 
-ポイント:
+ポイントとして
 
-- `--print` を使う（対話モードだと WezTerm から扱いにくい）
+- `--print` を使って対話を避ける
 - `--tools=` でツールを無効化して、純粋に「コマンド文字列だけ」を返すように寄せる
 - Claude が ``` を付けてくることがあるので `extract_command()` で剥がす
-- 改行を送るとそのまま実行されるので送らない（貼り付け＝補完に留める）
+- 改行を送るとそのまま実行されるので送らない
 
-スピナーは左ステータスを使って、`wezterm.time.call_after` で再描画している。右は見にくかったので左に寄せた。
+スピナーは左ステータスを使って、`wezterm.time.call_after` で再描画している。
 
 ```lua
 local ai_status_by_window_id = {}
@@ -103,4 +110,5 @@ local function stop_ai_spinner(window)
 end
 ```
 
-もし動かない時は WezTerm のデバッグオーバーレイ（`Ctrl+Shift+L`）を開いてログを見る。
+もし動かない時は WezTerm のデバッグオーバーレイ（`Ctrl+Shift+L`）を開いてログを見てデバックができる。
+
