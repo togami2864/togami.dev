@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "textlint": {
+      "autoApprove": [],
+      "disabled": false,
+      "timeout": 60,
+      "command": "npx",
+      "args": ["textlint", "--mcp"],
+      "transportType": "stdio"
+    }
+  }
+}

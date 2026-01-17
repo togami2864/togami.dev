@@ -1,11 +1,11 @@
 ---
-title: "透過ターミナルで zsh-autosuggestions を見やすくする"
+title: "透過ターミナルでの zsh-autosuggestions を見やすくする"
 slug: "zsh-autosuggest-highlight-style"
 publishedAt: "2025-12-22"
 category: "tech"
 ---
 
-weztermを使っており若干透過させる設定を入れている。その上に基本ダークモードなのでzsh補完の灰色のsuggestと相性が悪くめちゃくちゃ視認性が悪かった。そこで目立たせるための設定を探した。
+WezTermを使っており若干透過させる設定を入れている。その上に基本ダークモードなのでzsh-autosuggestionの灰色のauto completeと相性が悪く結構視認性が悪かった。そこでとにかく補完を目立たせるための設定を探した。
 
 `ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE`という設定で行けるようなので試してみた。
 

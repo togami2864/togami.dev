@@ -1,0 +1,13 @@
+{
+  "plugins": {},
+  "filters": {},
+  "rules": {
+    "@textlint-ja/preset-ai-writing": true,
+    "preset-ja-technical-writing": true,
+    "preset-ja-spacing": {
+      "ja-space-between-half-and-full-width": {
+        "space": ["alphabets"]
+      }
+    }
+  }
+}

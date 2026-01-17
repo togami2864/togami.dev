@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "textlint": "textlint content/**/*.md",
+    "format": "prettier --write content/**/*.md",
+    "mdlint": "markdownlint content/**/*.md"
   },
   "dependencies": {
     "@shikijs/rehype": "^3.21.0",
@@ -22,9 +25,15 @@
     "unified": "^11.0.5"
   },
   "devDependencies": {
+    "@textlint-ja/textlint-rule-preset-ai-writing": "^1.6.1",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "markdownlint-cli": "^0.46.0",
+    "prettier": "^3.7.3",
+    "textlint": "^15.4.0",
+    "textlint-rule-preset-ja-spacing": "^2.4.3",
+    "textlint-rule-preset-ja-technical-writing": "^12.0.2",
     "typescript": "^5.7.0"
   },
   "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
