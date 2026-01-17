@@ -61,14 +61,14 @@ keys = {
 }
 ```
 
-ポイントとして
+注意点として次のようなことがあります
 
 - `--print` を使って対話を避ける
 - `--tools=` でツールを無効化して、純粋に「コマンド文字列だけ」を返すように寄せる
 - Claude が ``` を付けてくることがあるので `extract_command()` で剥がす
 - 改行を送るとそのまま実行されるので送らない
 
-スピナーは左ステータスを使って、`wezterm.time.call_after` で再描画している。
+スピナーは左ステータスを使って、`wezterm.time.call_after` で再描画しています。
 
 ```lua
 local ai_status_by_window_id = {}
