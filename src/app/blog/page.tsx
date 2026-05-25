@@ -81,7 +81,7 @@ export default async function BlogPage() {
                     <Link href={`/blog/${article.id}`} className={styles.postLink}>
                       <span className={styles.postTitleWithIcon}>
                         <span className={styles.icon}>
-                          <ArticleIcon size={14} />
+                          <ArticleIcon size={18} />
                         </span>
                         <span className={styles.postTitle}>{article.title}</span>
                       </span>
@@ -98,7 +98,7 @@ export default async function BlogPage() {
                     >
                       <span className={styles.postContent}>
                         <span className={styles.icon}>
-                          <FileIcon size={14} />
+                          <FileIcon size={18} />
                         </span>
                         <span className={styles.postInfo}>
                           <span className={styles.postTitle}>{article.title}</span>

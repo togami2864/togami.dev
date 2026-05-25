@@ -1,6 +1,6 @@
 import { talks } from "@/data/talks";
 import { ExternalIcon } from "@/components/icons/ExternalIcon";
-import { FileIcon } from "@/components/icons/FileIcon";
+import { TalkIcon } from "@/components/icons/TalkIcon";
 import styles from "./page.module.css";
 
 export const metadata = {
@@ -43,7 +43,7 @@ export default function TalksPage() {
                   <div className={styles.postLink}>
                     <span className={styles.postContent}>
                       <span className={styles.icon}>
-                        <FileIcon size={14} />
+                        <TalkIcon size={18} />
                       </span>
                       <span className={styles.postInfo}>
                         <a

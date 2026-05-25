@@ -6,13 +6,16 @@ import { talks } from "@/data/talks";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { BlueskyIcon } from "@/components/icons/BlueskyIcon";
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
+import { XIcon } from "@/components/icons/XIcon";
 import { ArticleIcon } from "@/components/icons/ArticleIcon";
 import { ExternalIcon } from "@/components/icons/ExternalIcon";
 import { FileIcon } from "@/components/icons/FileIcon";
+import { TalkIcon } from "@/components/icons/TalkIcon";
 import styles from "./page.module.css";
 
 const socialLinks = [
   { href: "https://github.com/togami2864", label: "GitHub", icon: GitHubIcon },
+  { href: "https://x.com/togami2864", label: "X", icon: XIcon },
   { href: "https://bsky.app/profile/togami.dev", label: "Bluesky", icon: BlueskyIcon },
   { href: "https://linkedin.com/in/togami2864", label: "LinkedIn", icon: LinkedInIcon },
 ];
@@ -113,7 +116,7 @@ export default async function Home() {
                   >
                     <span className={styles.postContent}>
                       <span className={styles.icon}>
-                        <FileIcon size={14} />
+                        <FileIcon size={18} />
                       </span>
                       <span className={styles.postInfo}>
                         <span className={styles.postTitle}>{post.title}</span>
@@ -131,7 +134,7 @@ export default async function Home() {
                   <Link href={`/blog/${post.id}`} className={styles.postLink}>
                     <span className={styles.postTitleWithIcon}>
                       <span className={styles.icon}>
-                        <ArticleIcon size={14} />
+                        <ArticleIcon size={18} />
                       </span>
                       <span className={styles.postTitle}>{post.title}</span>
                     </span>
@@ -156,7 +159,7 @@ export default async function Home() {
                 <div className={styles.postLink}>
                   <span className={styles.postContent}>
                     <span className={styles.icon}>
-                      <FileIcon size={14} />
+                      <TalkIcon size={18} />
                     </span>
                     <span className={styles.postInfo}>
                       <a
