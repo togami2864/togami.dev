@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HomeIcon } from "./icons/HomeIcon";
 import { BlogIcon } from "./icons/BlogIcon";
+import { TalkIcon } from "./icons/TalkIcon";
 import { RssIcon } from "./icons/RssIcon";
 import styles from "./Header.module.css";
 
@@ -26,6 +27,13 @@ export const Header = () => {
         >
           <BlogIcon size={16} />
           <span>Blog</span>
+        </Link>
+        <Link
+          href="/talks"
+          className={`${styles.navLink} ${pathname === "/talks" || pathname.startsWith("/talks/") ? styles.active : ""}`}
+        >
+          <TalkIcon size={16} />
+          <span>Talks</span>
         </Link>
         <a
           href="/feed.xml"

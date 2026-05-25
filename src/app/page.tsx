@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getPosts } from "@/lib/posts";
 import { links } from "@/data/links";
+import { talks } from "@/data/talks";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { BlueskyIcon } from "@/components/icons/BlueskyIcon";
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
@@ -60,6 +61,10 @@ export default async function Home() {
   const recentPosts = [...internalPosts, ...externalPosts]
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
     .slice(0, 3);
+
+  const recentTalks = [...talks].sort(
+    (a, b) => new Date(b.presentedAt).getTime() - new Date(a.presentedAt).getTime(),
+  );
 
   return (
     <main className={styles.main}>
@@ -141,6 +146,45 @@ export default async function Home() {
           <Link href="/blog" className={styles.viewAll}>
             View all posts →
           </Link>
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Talks</h2>
+          <ul className={styles.postList}>
+            {recentTalks.map((talk) => (
+              <li key={talk.id} className={styles.postItem}>
+                <div className={styles.postLink}>
+                  <span className={styles.postContent}>
+                    <span className={styles.icon}>
+                      <FileIcon size={14} />
+                    </span>
+                    <span className={styles.postInfo}>
+                      <a
+                        href={talk.slidesUrl ?? talk.eventUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.postTitle}
+                      >
+                        {talk.title}
+                      </a>
+                      <a
+                        href={talk.eventUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.domainWithIcon}
+                      >
+                        <ExternalIcon size={12} />
+                        <span className={styles.domain}>{talk.event}</span>
+                      </a>
+                    </span>
+                  </span>
+                  <time className={styles.postDate}>
+                    {formatDate(talk.presentedAt)}
+                  </time>
+                </div>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </main>

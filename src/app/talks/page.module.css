@@ -1,0 +1,142 @@
+.main {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.03em;
+}
+
+.yearSection {
+  margin-bottom: 3rem;
+}
+
+.yearSection:last-child {
+  margin-bottom: 0;
+}
+
+.yearTitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+  margin-bottom: 1rem;
+}
+
+.postList {
+  display: flex;
+  flex-direction: column;
+}
+
+.postItem {
+  border-bottom: 1px solid var(--border);
+}
+
+.postItem:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.postLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  gap: 1rem;
+}
+
+.postTitleWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.postContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.postInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.postTitle {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.domainWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--text-tertiary);
+}
+
+.domain {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
+.postDate {
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+/* Mobile styles */
+@media (max-width: 640px) {
+  .main {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .yearSection {
+    margin-bottom: 2rem;
+  }
+
+  .postLink {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem 0;
+  }
+
+  .postTitle {
+    font-size: 0.9375rem;
+  }
+
+  .postDate {
+    font-size: 0.75rem;
+  }
+}
