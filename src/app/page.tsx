@@ -16,7 +16,7 @@ import styles from "./page.module.css";
 const socialLinks = [
   { href: "https://github.com/togami2864", label: "GitHub", icon: GitHubIcon },
   { href: "https://x.com/togami2864", label: "X", icon: XIcon },
-  { href: "https://bsky.app/profile/togami.dev", label: "Bluesky", icon: BlueskyIcon },
+  { href: "https://bsky.app/profile/togami-dev.bsky.social", label: "Bluesky", icon: BlueskyIcon },
   { href: "https://linkedin.com/in/togami2864", label: "LinkedIn", icon: LinkedInIcon },
 ];
 
