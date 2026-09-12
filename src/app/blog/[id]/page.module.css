@@ -226,6 +226,30 @@
   margin: 1.5rem 0;
 }
 
+.content :global(.youtube-embed) {
+  width: 100%;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000;
+}
+
+.content :global(.youtube-embed) iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+.content :global(.youtube-embed) figcaption {
+  padding: 0.65rem 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-align: center;
+  background: var(--bg-secondary);
+}
+
 .content hr {
   border: none;
   border-top: 1px solid var(--border);

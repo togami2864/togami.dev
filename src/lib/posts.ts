@@ -56,6 +56,99 @@ function rehypeImageAttrs() {
   };
 }
 
+function parseYouTubeUrl(value: unknown): URL | undefined {
+  if (typeof value !== "string") return;
+
+  try {
+    const url = new URL(value);
+    const hostname = url.hostname.replace(/^www\./, "");
+    let videoId: string | null = null;
+
+    if (hostname === "youtube.com" && url.pathname === "/watch") {
+      videoId = url.searchParams.get("v");
+    } else if (hostname === "youtu.be") {
+      videoId = url.pathname.slice(1).split("/")[0];
+    }
+
+    if (!videoId || !/^[\w-]{11}$/.test(videoId)) return;
+
+    const embedUrl = new URL(
+      `https://www.youtube-nocookie.com/embed/${videoId}`,
+    );
+    const start = parseYouTubeStartTime(
+      url.searchParams.get("t") ?? url.searchParams.get("start"),
+    );
+    if (start !== undefined) embedUrl.searchParams.set("start", String(start));
+
+    return embedUrl;
+  } catch {
+    return;
+  }
+}
+
+function parseYouTubeStartTime(value: string | null): number | undefined {
+  if (!value) return;
+  if (/^\d+$/.test(value)) return Number(value);
+
+  const match = value.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/);
+  if (!match || !match.slice(1).some(Boolean)) return;
+
+  return (
+    Number(match[1] ?? 0) * 3600 +
+    Number(match[2] ?? 0) * 60 +
+    Number(match[3] ?? 0)
+  );
+}
+
+function rehypeYouTubeEmbeds() {
+  return (tree: Root) => {
+    visit(tree, "element", (node: Element) => {
+      if (node.tagName !== "p" || node.children.length !== 1) return;
+
+      const link = node.children[0];
+      if (link.type !== "element" || link.tagName !== "a") return;
+
+      const embedUrl = parseYouTubeUrl(link.properties.href);
+      if (!embedUrl) return;
+
+      const linkText = link.children
+        .filter((child) => child.type === "text")
+        .map((child) => child.value)
+        .join("");
+      const caption = linkText.startsWith("http") ? undefined : linkText;
+
+      node.tagName = "figure";
+      node.properties = { className: ["youtube-embed"] };
+      node.children = [
+        {
+          type: "element",
+          tagName: "iframe",
+          properties: {
+            src: embedUrl.toString(),
+            title: caption || "YouTube video player",
+            loading: "lazy",
+            referrerPolicy: "strict-origin-when-cross-origin",
+            allow:
+              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+            allowFullScreen: true,
+          },
+          children: [],
+        },
+        ...(caption
+          ? [
+              {
+                type: "element" as const,
+                tagName: "figcaption",
+                properties: {},
+                children: [link],
+              },
+            ]
+          : []),
+      ];
+    });
+  };
+}
+
 const postsDirectory = path.join(process.cwd(), "content/posts");
 
 type PostFrontmatter = {
@@ -77,6 +170,7 @@ async function markdownToHtml(markdown: string): Promise<string> {
       theme: "github-dark",
     })
     .use(rehypeImageAttrs)
+    .use(rehypeYouTubeEmbeds)
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(markdown);
 
