@@ -5,11 +5,44 @@ import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
+import remarkDirective from "remark-directive";
 import rehypeStringify from "rehype-stringify";
 import rehypeShiki from "@shikijs/rehype";
 import { visit } from "unist-util-visit";
 import type { Root, Element } from "hast";
 import type { Post } from "@/types";
+
+type DirectiveNode = {
+  type: string;
+  name: string;
+  children: Array<{ data?: { directiveLabel?: boolean; hName?: string } }>;
+  data?: { hName?: string; hProperties?: Record<string, unknown> };
+};
+
+function remarkColumn() {
+  return (tree: Root) => {
+    visit(tree, (node) => {
+      const n = node as unknown as DirectiveNode;
+      if (n.type !== "containerDirective" || n.name !== "column") return;
+
+      n.data = n.data ?? {};
+      n.data.hName = "details";
+      n.data.hProperties = { className: ["column"] };
+
+      const label = n.children.find((c) => c.data?.directiveLabel);
+      if (label) {
+        label.data = label.data ?? {};
+        label.data.hName = "summary";
+      } else {
+        n.children.unshift({
+          type: "paragraph",
+          data: { hName: "summary" },
+          children: [{ type: "text", value: "" }],
+        } as unknown as DirectiveNode["children"][number]);
+      }
+    });
+  };
+}
 
 function rehypeImageAttrs() {
   return (tree: Root) => {
@@ -37,6 +70,8 @@ async function markdownToHtml(markdown: string): Promise<string> {
   const result = await unified()
     .use(remarkParse)
     .use(remarkGfm)
+    .use(remarkDirective)
+    .use(remarkColumn)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeShiki, {
       theme: "github-dark",

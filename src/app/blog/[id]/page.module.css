@@ -134,6 +134,80 @@
   border-bottom: 1px solid #333;
 }
 
+.content :global(details.column) {
+  margin: 2.5rem 0;
+  border: 1px solid var(--border);
+  border-left: 4px solid #fbbf24;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+
+.content :global(details.column) summary {
+  cursor: pointer;
+  padding: 1rem 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--bg-tertiary);
+  user-select: none;
+}
+
+.content :global(details.column) summary::-webkit-details-marker {
+  display: none;
+}
+
+.content :global(details.column) summary::before {
+  content: "コラム";
+  flex: none;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: #fbbf24;
+  color: #0a0a0a;
+}
+
+.content :global(details.column) summary::after {
+  content: "▶";
+  margin-left: auto;
+  font-size: 0.7em;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.content :global(details.column)[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.content :global(details.column)::details-content {
+  box-sizing: border-box;
+  block-size: 5.5em;
+  overflow: hidden;
+  padding: 1rem 1.25rem 0;
+  content-visibility: visible;
+  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 95%);
+  mask-image: linear-gradient(to bottom, #000 35%, transparent 95%);
+  transition: block-size 0.35s ease;
+}
+
+.content :global(details.column)[open]::details-content {
+  block-size: auto;
+  padding-bottom: 0.75rem;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content :global(details.column)::details-content {
+    transition: none;
+  }
+}
+
 .content blockquote {
   border-left: 3px solid var(--border);
   padding-left: 1rem;
