@@ -250,6 +250,65 @@
   background: var(--bg-secondary);
 }
 
+.content :global(.github-card) {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: min(100%, 34rem);
+  margin: 1.25rem auto 1.5rem;
+  padding: 0.8rem 1rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  transition:
+    border-color 0.2s,
+    transform 0.2s;
+}
+
+.content :global(.github-card):hover {
+  opacity: 1;
+  border-color: var(--text-secondary);
+  transform: translateY(-1px);
+}
+
+.content :global(.github-card-icon) {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  fill: currentColor;
+}
+
+.content :global(.github-card-body) {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  line-height: 1.45;
+}
+
+.content :global(.github-card-title) {
+  overflow: hidden;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.content :global(.github-card-path) {
+  overflow: hidden;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.content :global(.github-card-arrow) {
+  flex: none;
+  color: var(--text-secondary);
+}
+
 .content hr {
   border: none;
   border-top: 1px solid var(--border);
