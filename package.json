@@ -12,6 +12,7 @@
     "mdlint": "markdownlint content/**/*.md"
   },
   "dependencies": {
+    "@fontsource/noto-sans-jp": "^5.3.0",
     "@shikijs/rehype": "^3.21.0",
     "@types/hast": "^3.0.4",
     "gray-matter": "^4.0.3",
