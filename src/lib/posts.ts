@@ -56,6 +56,51 @@ function rehypeImageAttrs() {
   };
 }
 
+function getDescendantLinks(node: Element): Element[] {
+  const links: Element[] = [];
+
+  visit(node, "element", (child: Element) => {
+    if (child.tagName === "a") links.push(child);
+  });
+
+  return links;
+}
+
+function rehypeArticleSeries(currentPostId: string) {
+  return (tree: Root) => {
+    visit(tree, "element", (node: Element) => {
+      if (node.tagName !== "ul") return;
+
+      const items = node.children.filter(
+        (child): child is Element =>
+          child.type === "element" && child.tagName === "li",
+      );
+      if (items.length < 3) return;
+
+      const links = items.map((item) => getDescendantLinks(item));
+      const isArticleSeries = links.every((itemLinks) => {
+        if (itemLinks.length !== 1) return false;
+        const href = itemLinks[0].properties.href;
+        return typeof href === "string" && href.startsWith("/blog/");
+      });
+      if (!isArticleSeries) return;
+
+      node.properties = node.properties || {};
+      node.properties.className = [
+        ...((node.properties.className as string[] | undefined) ?? []),
+        "article-series",
+      ];
+      node.properties.ariaLabel = "Series navigation";
+
+      for (const [link] of links) {
+        if (link.properties.href === `/blog/${currentPostId}`) {
+          link.properties.ariaCurrent = "page";
+        }
+      }
+    });
+  };
+}
+
 function parseYouTubeUrl(value: unknown): URL | undefined {
   if (typeof value !== "string") return;
 
@@ -260,7 +305,10 @@ type PostFrontmatter = {
   eyecatch?: string;
 };
 
-async function markdownToHtml(markdown: string): Promise<string> {
+async function markdownToHtml(
+  markdown: string,
+  currentPostId: string,
+): Promise<string> {
   const result = await unified()
     .use(remarkParse)
     .use(remarkGfm)
@@ -270,6 +318,7 @@ async function markdownToHtml(markdown: string): Promise<string> {
     .use(rehypeShiki, {
       theme: "github-dark",
     })
+    .use(rehypeArticleSeries, currentPostId)
     .use(rehypeImageAttrs)
     .use(rehypeYouTubeEmbeds)
     .use(rehypeGitHubCards)
@@ -341,7 +390,7 @@ export async function getPostById(id: string): Promise<Post> {
   }
 
   const { frontmatter, content } = parsePost(filename);
-  const htmlContent = await markdownToHtml(content);
+  const htmlContent = await markdownToHtml(content, id);
 
   return {
     id,
