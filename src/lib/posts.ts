@@ -12,6 +12,18 @@ import { visit } from "unist-util-visit";
 import type { Root, Element } from "hast";
 import type { Post } from "@/types";
 
+const SHIKI_LANGUAGES = [
+  "bash",
+  "csharp",
+  "go",
+  "javascript",
+  "lua",
+  "python",
+  "rust",
+  "typescript",
+  "vue",
+] as const;
+
 type DirectiveNode = {
   type: string;
   name: string;
@@ -317,6 +329,7 @@ async function markdownToHtml(
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeShiki, {
       theme: "github-dark",
+      langs: [...SHIKI_LANGUAGES],
     })
     .use(rehypeArticleSeries, currentPostId)
     .use(rehypeImageAttrs)
@@ -378,6 +391,22 @@ export async function getPosts(): Promise<{ contents: Post[] }> {
 }
 
 export async function getPostById(id: string): Promise<Post> {
+  const { frontmatter, content } = findPostById(id);
+  const htmlContent = await markdownToHtml(content, id);
+
+  return createPost(id, frontmatter, htmlContent);
+}
+
+export function getPostMetadataById(id: string): Post {
+  const { frontmatter } = findPostById(id);
+
+  return createPost(id, frontmatter, "");
+}
+
+function findPostById(id: string): {
+  frontmatter: PostFrontmatter;
+  content: string;
+} {
   const files = getPostFiles();
   const filename = files.find((file) => {
     const { frontmatter } = parsePost(file);
@@ -389,13 +418,18 @@ export async function getPostById(id: string): Promise<Post> {
     throw new Error(`Post not found: ${id}`);
   }
 
-  const { frontmatter, content } = parsePost(filename);
-  const htmlContent = await markdownToHtml(content, id);
+  return parsePost(filename);
+}
 
+function createPost(
+  id: string,
+  frontmatter: PostFrontmatter,
+  content: string,
+): Post {
   return {
     id,
     title: frontmatter.title,
-    content: htmlContent,
+    content,
     publishedAt: frontmatter.publishedAt,
     createdAt: frontmatter.publishedAt,
     eyecatch: frontmatter.eyecatch,

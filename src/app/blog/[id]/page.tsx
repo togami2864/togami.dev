@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getPosts, getPostById } from "@/lib/posts";
+import { getPosts, getPostById, getPostMetadataById } from "@/lib/posts";
 import styles from "./page.module.css";
 
 type Props = {
@@ -19,7 +19,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const post = await getPostById(id);
+  const post = getPostMetadataById(id);
   const url = `${BASE_URL}/blog/${id}`;
 
   return {
