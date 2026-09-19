@@ -46,7 +46,10 @@ export default async function OpenGraphImage({ params }: Props) {
     regularFont,
     boldFont,
   ]);
-  const titleSize = post.title.length > 52 ? 56 : 64;
+  const imageTitle = post.title
+    .replace(/\p{Extended_Pictographic}/gu, "")
+    .trim();
+  const titleSize = imageTitle.length > 52 ? 56 : 64;
 
   return new ImageResponse(
     <div
@@ -113,7 +116,7 @@ export default async function OpenGraphImage({ params }: Props) {
             letterSpacing: "-0.035em",
           }}
         >
-          {post.title}
+          {imageTitle}
         </div>
 
         <div
