@@ -7,10 +7,11 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import remarkDirective from "remark-directive";
 import rehypeStringify from "rehype-stringify";
+import rehypeSlug from "rehype-slug";
 import rehypeShiki from "@shikijs/rehype";
 import { visit } from "unist-util-visit";
-import type { Root, Element } from "hast";
-import type { Post } from "@/types";
+import type { Root, Element, RootContent } from "hast";
+import type { Post, TableOfContentsItem } from "@/types";
 
 const SHIKI_LANGUAGES = [
   "bash",
@@ -64,6 +65,29 @@ function rehypeImageAttrs() {
         node.properties.loading = "eager";
         node.properties.decoding = "sync";
       }
+    });
+  };
+}
+
+function getNodeText(node: Root | RootContent): string {
+  if (node.type === "text") return node.value;
+  if ("children" in node) return node.children.map(getNodeText).join("");
+  return "";
+}
+
+function rehypeTableOfContents(options: { items: TableOfContentsItem[] }) {
+  return (tree: Root) => {
+    visit(tree, "element", (node: Element) => {
+      if (node.tagName !== "h2" && node.tagName !== "h3") return;
+
+      const id = node.properties.id;
+      if (typeof id !== "string") return;
+
+      options.items.push({
+        id,
+        text: getNodeText(node).trim(),
+        level: node.tagName === "h2" ? 2 : 3,
+      });
     });
   };
 }
@@ -320,13 +344,16 @@ type PostFrontmatter = {
 async function markdownToHtml(
   markdown: string,
   currentPostId: string,
-): Promise<string> {
+): Promise<{ html: string; tableOfContents: TableOfContentsItem[] }> {
+  const tableOfContents: TableOfContentsItem[] = [];
   const result = await unified()
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkDirective)
     .use(remarkColumn)
     .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeSlug)
+    .use(rehypeTableOfContents, { items: tableOfContents })
     .use(rehypeShiki, {
       theme: "github-dark",
       langs: [...SHIKI_LANGUAGES],
@@ -338,7 +365,7 @@ async function markdownToHtml(
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(markdown);
 
-  return String(result);
+  return { html: String(result), tableOfContents };
 }
 
 function getPostFiles(): string[] {
@@ -373,6 +400,7 @@ export async function getPosts(): Promise<{ contents: Post[] }> {
       id: slug,
       title: frontmatter.title,
       content: "",
+      tableOfContents: [],
       publishedAt: frontmatter.publishedAt,
       createdAt: frontmatter.publishedAt,
       eyecatch: frontmatter.eyecatch,
@@ -392,9 +420,9 @@ export async function getPosts(): Promise<{ contents: Post[] }> {
 
 export async function getPostById(id: string): Promise<Post> {
   const { frontmatter, content } = findPostById(id);
-  const htmlContent = await markdownToHtml(content, id);
+  const { html, tableOfContents } = await markdownToHtml(content, id);
 
-  return createPost(id, frontmatter, htmlContent);
+  return createPost(id, frontmatter, html, tableOfContents);
 }
 
 export function getPostMetadataById(id: string): Post {
@@ -425,11 +453,13 @@ function createPost(
   id: string,
   frontmatter: PostFrontmatter,
   content: string,
+  tableOfContents: TableOfContentsItem[] = [],
 ): Post {
   return {
     id,
     title: frontmatter.title,
     content,
+    tableOfContents,
     publishedAt: frontmatter.publishedAt,
     createdAt: frontmatter.publishedAt,
     eyecatch: frontmatter.eyecatch,

@@ -7,6 +7,12 @@ export type Category = {
   revisedAt: string;
 };
 
+export type TableOfContentsItem = {
+  id: string;
+  text: string;
+  level: 2 | 3;
+};
+
 export type Post = {
   id: string;
   title: string;
@@ -17,4 +23,5 @@ export type Post = {
   updatedAt?: string;
   publishedAt: string;
   revisedAt?: string;
+  tableOfContents: TableOfContentsItem[];
 };
