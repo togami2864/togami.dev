@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
+import "remark-github-blockquote-alert/alert.css";
 import "./globals.css";
 
 const BASE_URL = "https://togami.dev";
