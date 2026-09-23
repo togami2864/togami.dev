@@ -130,6 +130,14 @@ function rehypeArticleSeries(currentPostId: string) {
       node.properties.ariaLabel = "Series navigation";
 
       for (const [link] of links) {
+        const title = getNodeText(link).trim();
+        const shortTitle = title.match(
+          /^Exploring the TypeScript Compiler (Part \d+: .+)$/,
+        )?.[1];
+        if (shortTitle) {
+          link.children = [{ type: "text", value: shortTitle }];
+        }
+
         if (link.properties.href === `/blog/${currentPostId}`) {
           link.properties.ariaCurrent = "page";
         }
