@@ -1,6 +1,7 @@
 ---
 title: "Exploring the TypeScript Compiler Part 0: Overview"
 slug: "exploring-the-typescript-compiler-part-0"
+lang: ja
 publishedAt: "2026-09-12"
 category: "tech"
 ---

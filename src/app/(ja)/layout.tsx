@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import "remark-github-blockquote-alert/alert.css";
-import "./globals.css";
+import "../globals.css";
 
 const BASE_URL = "https://togami.dev";
 
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
       "application/rss+xml": `${BASE_URL}/feed.xml`,
     },
     canonical: BASE_URL,
+    languages: { ja: BASE_URL, en: `${BASE_URL}/en` },
   },
   openGraph: {
     type: "website",
@@ -41,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <Header />
+        <Header locale="ja" />
         {children}
       </body>
     </html>

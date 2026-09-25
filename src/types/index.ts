@@ -15,6 +15,7 @@ export type TableOfContentsItem = {
 
 export type Post = {
   id: string;
+  lang: "ja" | "en";
   title: string;
   content: string;
   eyecatch?: string;

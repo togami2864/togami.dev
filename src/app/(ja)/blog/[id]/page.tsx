@@ -12,16 +12,15 @@ type Props = {
 const BASE_URL = "https://togami.dev";
 
 export async function generateStaticParams() {
-  const { contents: posts } = await getPosts();
+  const { contents: posts } = await getPosts("ja");
   return posts.map((post) => ({
     id: post.id,
   }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+export function getArticleMetadata(id: string, locale: "ja" | "en"): Metadata {
   const post = getPostMetadataById(id);
-  const url = `${BASE_URL}/blog/${id}`;
+  const url = `${BASE_URL}${locale === "en" ? "/en" : ""}/blog/${id}`;
 
   return {
     title: post.title,
@@ -32,6 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       type: "article",
       url,
+      locale: locale === "en" ? "en_US" : "ja_JP",
       title: post.title,
       description: post.title,
       publishedTime: post.publishedAt,
@@ -49,14 +49,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  return getArticleMetadata(id, "ja");
+}
+
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 };
 
-export default async function BlogPostPage({ params }: Props) {
-  const { id } = await params;
+export async function BlogPostContent({ id, locale }: { id: string; locale: "ja" | "en" }) {
   const post = await getPostById(id);
+  if (post.lang !== locale) throw new Error(`Wrong language for post: ${id}`);
+  const prefix = locale === "en" ? "/en" : "";
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -74,7 +80,8 @@ export default async function BlogPostPage({ params }: Props) {
       name: "togami",
       url: BASE_URL,
     },
-    url: `${BASE_URL}/blog/${id}`,
+    url: `${BASE_URL}${prefix}/blog/${id}`,
+    inLanguage: locale,
     ...(post.eyecatch && { image: post.eyecatch }),
   };
 
@@ -108,7 +115,7 @@ export default async function BlogPostPage({ params }: Props) {
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
             <footer className={styles.footer}>
-              <Link href="/blog" className={styles.backLink}>
+              <Link href={`${prefix}/blog`} className={styles.backLink}>
                 ← Back to list
               </Link>
             </footer>
@@ -120,4 +127,9 @@ export default async function BlogPostPage({ params }: Props) {
       </main>
     </>
   );
+}
+
+export default async function BlogPostPage({ params }: Props) {
+  const { id } = await params;
+  return <BlogPostContent id={id} locale="ja" />;
 }

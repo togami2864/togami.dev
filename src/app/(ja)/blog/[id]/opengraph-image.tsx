@@ -27,7 +27,7 @@ const boldFont = readFile(
 );
 
 export async function generateStaticParams() {
-  const { contents: posts } = await getPosts();
+  const { contents: posts } = await getPosts("ja");
 
   return posts.map((post) => ({ id: post.id }));
 }

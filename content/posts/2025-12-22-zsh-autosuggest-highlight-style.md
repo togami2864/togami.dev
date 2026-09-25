@@ -1,6 +1,7 @@
 ---
 title: "透過ターミナルでの zsh-autosuggestions を見やすくする"
 slug: "zsh-autosuggest-highlight-style"
+lang: ja
 publishedAt: "2025-12-22"
 category: "tech"
 ---

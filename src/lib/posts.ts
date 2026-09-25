@@ -354,6 +354,7 @@ const postsDirectory = path.join(process.cwd(), "content/posts");
 type PostFrontmatter = {
   title: string;
   slug: string;
+  lang: "ja" | "en";
   publishedAt: string;
   draft?: boolean;
   category?: string;
@@ -412,8 +413,12 @@ function parsePost(filename: string): {
   };
 }
 
-export async function getPosts(): Promise<{ contents: Post[] }> {
-  const files = getPostFiles();
+export async function getPosts(lang?: "ja" | "en"): Promise<{ contents: Post[] }> {
+  const files = getPostFiles().filter((filename) => {
+    const postLang = parsePost(filename).frontmatter.lang;
+    if (!postLang) throw new Error(`Missing lang in ${filename}`);
+    return !lang || postLang === lang;
+  });
 
   const posts: Post[] = files.map((filename) => {
     const { frontmatter } = parsePost(filename);
@@ -421,6 +426,7 @@ export async function getPosts(): Promise<{ contents: Post[] }> {
 
     return {
       id: slug,
+      lang: frontmatter.lang,
       title: frontmatter.title,
       content: "",
       tableOfContents: [],
@@ -480,6 +486,7 @@ function createPost(
 ): Post {
   return {
     id,
+    lang: frontmatter.lang,
     title: frontmatter.title,
     content,
     tableOfContents,

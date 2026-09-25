@@ -1,6 +1,7 @@
 ---
 title: "Webkit WebDriver開発ことはじめ"
 slug: "webkit-webdriver-setup"
+lang: ja
 publishedAt: "2025-11-25"
 category: "tech"
 ---
@@ -101,4 +102,3 @@ self.origin = os.environ.get('WEBKIT_SDK_ORIGIN', 'webkit')
 ---
 
 ここまでで一ヶ月！！
-

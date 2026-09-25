@@ -1,6 +1,7 @@
 ---
 title: "Exploring the TypeScript Compiler Part 1: Why Go?"
 slug: "exploring-the-typescript-compiler-part-1"
+lang: ja
 publishedAt: "2026-09-13"
 category: "tech"
 ---

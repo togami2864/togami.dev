@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getPosts } from "@/lib/posts";
 import { links } from "@/data/links";
 import { talks } from "@/data/talks";
+import { isVisibleInLocale } from "@/lib/language";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { BlueskyIcon } from "@/components/icons/BlueskyIcon";
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
@@ -42,8 +43,9 @@ const getDomain = (url: string): string => {
   }
 };
 
-export default async function Home() {
-  const { contents: posts } = await getPosts();
+export async function HomeContent({ locale }: { locale: "ja" | "en" }) {
+  const { contents: posts } = await getPosts(locale);
+  const prefix = locale === "en" ? "/en" : "";
 
   const internalPosts: RecentPost[] = posts.map((post) => ({
     id: post.id,
@@ -52,7 +54,7 @@ export default async function Home() {
     isExternal: false,
   }));
 
-  const externalPosts: RecentPost[] = links.map((link) => ({
+  const externalPosts: RecentPost[] = links.filter((link) => isVisibleInLocale(link.lang, locale)).map((link) => ({
     id: link.id,
     title: link.title,
     publishedAt: link.publishedAt,
@@ -65,7 +67,7 @@ export default async function Home() {
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
     .slice(0, 3);
 
-  const recentTalks = [...talks].sort(
+  const recentTalks = talks.filter((talk) => isVisibleInLocale(talk.lang, locale)).sort(
     (a, b) => new Date(b.presentedAt).getTime() - new Date(a.presentedAt).getTime(),
   );
 
@@ -131,7 +133,7 @@ export default async function Home() {
                     </time>
                   </a>
                 ) : (
-                  <Link href={`/blog/${post.id}`} className={styles.postLink}>
+                  <Link href={`${prefix}/blog/${post.id}`} className={styles.postLink}>
                     <span className={styles.postTitleWithIcon}>
                       <span className={styles.icon}>
                         <ArticleIcon size={18} />
@@ -146,7 +148,7 @@ export default async function Home() {
               </li>
             ))}
           </ul>
-          <Link href="/blog" className={styles.viewAll}>
+          <Link href={`${prefix}/blog`} className={styles.viewAll}>
             View all posts →
           </Link>
         </section>
@@ -192,4 +194,8 @@ export default async function Home() {
       </div>
     </main>
   );
+}
+
+export default function Home() {
+  return <HomeContent locale="ja" />;
 }

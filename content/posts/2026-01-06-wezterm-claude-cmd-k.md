@@ -1,6 +1,7 @@
 ---
 title: "WezTerm で Cmd+k から Claude Code を呼び出してコマンドを生成する"
 slug: "wezterm-claude-cmd-k"
+lang: ja
 publishedAt: "2026-01-06"
 category: "tech"
 ---
@@ -111,4 +112,3 @@ end
 ```
 
 もし動かない時は WezTerm のデバッグオーバーレイ（`Ctrl+Shift+L`）を開いてログを見てデバックができる。
-

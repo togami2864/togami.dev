@@ -1,6 +1,7 @@
 ---
 title: "A Quick Guide to Migrating from VeeValidate v3 to v4 in Vue Applications"
 slug: "veevalidate-v3-to-v4-migration"
+lang: en
 publishedAt: "2024-04-24"
 category: "tech"
 ---

@@ -1,10 +1,13 @@
 import { talks } from "@/data/talks";
+import { isVisibleInLocale } from "@/lib/language";
+import type { Metadata } from "next";
 import { ExternalIcon } from "@/components/icons/ExternalIcon";
 import { TalkIcon } from "@/components/icons/TalkIcon";
 import styles from "./page.module.css";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Talks",
+  alternates: { canonical: "/talks", languages: { ja: "/talks", en: "/en/talks" } },
 };
 
 const formatDate = (dateString: string): string => {
@@ -27,8 +30,8 @@ const groupByYear = <T extends { presentedAt: string }>(items: T[]): Map<number,
   return grouped;
 };
 
-export default function TalksPage() {
-  const talksByYear = groupByYear(talks);
+export function TalksContent({ locale }: { locale: "ja" | "en" }) {
+  const talksByYear = groupByYear(talks.filter((talk) => isVisibleInLocale(talk.lang, locale)));
 
   return (
     <main className={styles.main}>
@@ -77,4 +80,8 @@ export default function TalksPage() {
       </div>
     </main>
   );
+}
+
+export default function TalksPage() {
+  return <TalksContent locale="ja" />;
 }

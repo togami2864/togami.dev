@@ -1,6 +1,7 @@
 ---
 title: "Exploring the TypeScript Compiler Part 2: Inside the TypeScript Compiler"
 slug: "exploring-the-typescript-compiler-part-2"
+lang: ja
 publishedAt: "2026-09-14"
 category: "tech"
 ---

@@ -1,5 +1,8 @@
+import type { ContentLanguage } from "@/lib/language";
+
 export type Talk = {
   id: string;
+  lang: ContentLanguage;
   title: string;
   event: string;
   eventUrl: string;
@@ -10,6 +13,7 @@ export type Talk = {
 export const talks: Talk[] = [
   {
     id: "1",
+    lang: "ja",
     title: "制約と時代から読み解くTypeScriptコンパイラ設計史",
     event: "TSKaigi 2026",
     eventUrl: "https://2026.tskaigi.org/talks/38",
@@ -18,6 +22,7 @@ export const talks: Talk[] = [
   },
   {
     id: "2",
+    lang: "both",
     title: "JavaScript Testing Framework: Under the Hood",
     event: "JSConf JP 2022",
     eventUrl: "https://jsconf.jp/2022/schedule/",

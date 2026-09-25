@@ -1,5 +1,6 @@
 import { getPosts } from "@/lib/posts";
 import { links } from "@/data/links";
+import { isVisibleInLocale } from "@/lib/language";
 
 export const dynamic = "force-static";
 
@@ -22,16 +23,17 @@ const escapeXml = (text: string): string => {
     .replace(/'/g, "&apos;");
 };
 
-export async function GET() {
-  const { contents: posts } = await getPosts();
+export async function makeFeed(locale: "ja" | "en") {
+  const { contents: posts } = await getPosts(locale);
+  const prefix = locale === "en" ? "/en" : "";
 
   const internalItems: FeedItem[] = posts.map((post) => ({
     title: post.title,
-    url: `${SITE_URL}/blog/${post.id}`,
+    url: `${SITE_URL}${prefix}/blog/${post.id}`,
     pubDate: post.publishedAt ?? post.createdAt,
   }));
 
-  const externalItems: FeedItem[] = links.map((link) => ({
+  const externalItems: FeedItem[] = links.filter((link) => isVisibleInLocale(link.lang, locale)).map((link) => ({
     title: link.title,
     url: link.url,
     pubDate: link.publishedAt,
@@ -58,10 +60,10 @@ export async function GET() {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${escapeXml(SITE_TITLE)}</title>
-    <link>${SITE_URL}</link>
+    <link>${SITE_URL}${prefix}</link>
     <description>${escapeXml(SITE_DESCRIPTION)}</description>
-    <language>ja</language>
-    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
+    <language>${locale}</language>
+    <atom:link href="${SITE_URL}${prefix}/feed.xml" rel="self" type="application/rss+xml"/>
     ${rssItems}
   </channel>
 </rss>`;
@@ -71,4 +73,8 @@ export async function GET() {
       "Content-Type": "application/xml",
     },
   });
+}
+
+export async function GET() {
+  return makeFeed("ja");
 }
