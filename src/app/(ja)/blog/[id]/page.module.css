@@ -254,6 +254,10 @@
   color: #0a0a0a;
 }
 
+.content[data-lang="en"] :global(details.column) summary::before {
+  content: "Column";
+}
+
 .content :global(details.column) summary::after {
   content: "▶";
   margin-left: auto;

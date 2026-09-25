@@ -136,7 +136,7 @@ After binding, the result looks like the following diagram.[^3]
 Next, Binder reaches `add(1, "2")`. Although this code references the `add` function, **Binder does not resolve the name at this point.** Binder only sets up the information needed for control flow analysis. Later, when Checker needs the target of the reference, it resolves the Symbol for the corresponding function declaration.
 
 :::column[TypeScript and C#]
-TypeScript and Roslyn, the C# compiler, have very similar internal concepts and terminology. I guess the reason why is both were developed at Microsoft and have the same architect.
+TypeScript and Roslyn, the C# compiler, have very similar internal concepts and terminology. I guess that's because both were developed at Microsoft and were designed by the same architect🤔
 
 [Roslyn Overview](https://github.com/dotnet/roslyn/blob/main/docs/wiki/Roslyn-Overview.md)
 

@@ -119,6 +119,7 @@ export async function BlogPostContent({ id, locale }: { id: string; locale: "ja"
             </header>
             <div
               className={styles.content}
+              data-lang={locale}
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
             <footer className={styles.footer}>
