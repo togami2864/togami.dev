@@ -36,10 +36,17 @@ export const links: Link[] = [
     publishedAt: "2023-12-16",
   },
   {
-    "id": "5",
+    id: "5",
     title: "TypeScript Compiler が型チェックをするまでを追う",
     url: "https://zenn.dev/togami2864/articles/5b6c80cf913b7a",
     platform: "zenn",
     publishedAt: "2025-12-18",
-  }
+  },
+  {
+    id: "6",
+    title: "JavaScript Testing Framework: Under the Hood (JSConf JP 2022)",
+    url: "https://www.youtube.com/watch?v=qBcucQqUYS4",
+    platform: "other",
+    publishedAt: "2022-11-26",
+  },
 ];

@@ -16,4 +16,12 @@ export const talks: Talk[] = [
     slidesUrl: "https://www.docswell.com/s/6114195/K8NM12-2026-05-23-103822-tskaigi",
     presentedAt: "2026-05-23",
   },
+  {
+    id: "2",
+    title: "JavaScript Testing Framework: Under the Hood",
+    event: "JSConf JP 2022",
+    eventUrl: "https://jsconf.jp/2022/schedule/",
+    slidesUrl: "https://speakerdeck.com/toooog/javascript-testing-framework-under-the-hood-jsconfjp2022",
+    presentedAt: "2022-11-26",
+  },
 ];
