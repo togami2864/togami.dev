@@ -79,6 +79,12 @@
     display: block;
     width: min(13rem, calc(50vw - 25rem));
     height: 100%;
+    transition: opacity 0.2s, visibility 0.2s;
+  }
+
+  .tocHidden {
+    opacity: 0;
+    visibility: hidden;
   }
 
   .tocNav {
@@ -323,39 +329,22 @@
   text-align: center;
 }
 
-@media (max-width: 640px) {
-  .content :global(.figure-scrollable) {
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .content :global(.figure-scrollable) img {
-    width: 55rem;
-    max-width: none;
-  }
-
-  .content :global(.figure-extra-wide) img {
-    width: 70rem;
-  }
-}
-
 /* Compact navigation for a multi-part article series on desktop. */
 @media (min-width: 641px) {
   .content :global(.embed-image-wide) {
-    width: min(840px, calc(100vw - 2rem));
+    width: min(780px, calc(100vw - 2rem));
     margin-left: 50%;
     transform: translateX(-50%);
   }
 
   .content :global(.figure-wide) {
-    width: min(55rem, calc(100vw - 2rem));
+    width: min(50rem, calc(100vw - 2rem));
     margin-left: 50%;
     transform: translateX(-50%);
   }
 
   .content :global(.figure-extra-wide) {
-    width: min(80rem, calc(100vw - 2rem));
+    width: min(70rem, calc(100vw - 2rem));
     margin-left: 50%;
     transform: translateX(-50%);
   }
@@ -412,36 +401,22 @@
     font-weight: 600;
   }
 
+  .content :global(.article-series-pending) {
+    padding: 0.5rem 0.625rem;
+    color: var(--text-tertiary);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
   .content h2 {
     padding-top: 0.875rem;
     border-top: 1px solid var(--border);
   }
 }
 
-@media (min-width: 1180px) {
-  .content :global(.embed-image-wide) {
-    width: 100%;
-    margin-left: 0;
-    transform: none;
-  }
-
-  .content :global(.figure-wide),
-  .content :global(.figure-extra-wide) {
-    width: 100%;
-    margin-left: 0;
-    transform: none;
-    overflow-x: auto;
-  }
-
-  .content :global(.figure-wide) img {
-    width: 55rem;
-    max-width: none;
-  }
-
-  .content :global(.figure-extra-wide) img {
-    width: 80rem;
-    max-width: none;
-  }
+.content :global(.figure-wide) img,
+.content :global(.figure-extra-wide) img {
+  width: 100%;
 }
 
 .content :global(.youtube-embed) {
@@ -628,6 +603,14 @@
     box-shadow: inset 3px 0 0 var(--text-primary);
     color: var(--text-primary);
     font-weight: 600;
+  }
+
+  .content :global(.article-series-pending) {
+    min-height: 44px;
+    padding: 0.5rem 0.625rem;
+    color: var(--text-tertiary);
+    font-size: 0.8125rem;
+    line-height: 1.45;
   }
 
   .content pre {

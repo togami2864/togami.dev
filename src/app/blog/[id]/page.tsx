@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getPosts, getPostById, getPostMetadataById } from "@/lib/posts";
+import TableOfContents from "./TableOfContents";
 import styles from "./page.module.css";
 
 type Props = {
@@ -113,25 +114,7 @@ export default async function BlogPostPage({ params }: Props) {
             </footer>
           </article>
           {post.tableOfContents.length > 0 && (
-            <aside className={styles.toc}>
-              <nav className={styles.tocNav} aria-label="目次">
-                <p className={styles.tocTitle}>Contents</p>
-                <ol className={styles.tocList}>
-                  {post.tableOfContents.map((item) => (
-                    <li
-                      key={item.id}
-                      className={`${styles.tocItem} ${
-                        item.level === 3 ? styles.tocItemNested : ""
-                      }`}
-                    >
-                      <a className={styles.tocLink} href={`#${item.id}`}>
-                        {item.text}
-                      </a>
-                    </li>
-                  ))}
-                </ol>
-              </nav>
-            </aside>
+            <TableOfContents items={post.tableOfContents} />
           )}
         </div>
       </main>

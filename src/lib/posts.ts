@@ -115,11 +115,16 @@ function rehypeArticleSeries(currentPostId: string) {
       if (items.length < 3) return;
 
       const links = items.map((item) => getDescendantLinks(item));
-      const isArticleSeries = links.every((itemLinks) => {
-        if (itemLinks.length !== 1) return false;
-        const href = itemLinks[0].properties.href;
-        return typeof href === "string" && href.startsWith("/blog/");
-      });
+      const isArticleSeries =
+        links.filter((itemLinks) => itemLinks.length === 1).length >= 3 &&
+        links.every((itemLinks, index) => {
+          if (itemLinks.length === 0) {
+            return getNodeText(items[index]).includes("Coming soon");
+          }
+          if (itemLinks.length !== 1) return false;
+          const href = itemLinks[0].properties.href;
+          return typeof href === "string" && href.startsWith("/blog/");
+        });
       if (!isArticleSeries) return;
 
       node.properties = node.properties || {};
@@ -129,7 +134,11 @@ function rehypeArticleSeries(currentPostId: string) {
       ];
       node.properties.ariaLabel = "Series navigation";
 
-      for (const [link] of links) {
+      for (const [index, [link]] of links.entries()) {
+        if (!link) {
+          items[index].properties.className = ["article-series-pending"];
+          continue;
+        }
         const title = getNodeText(link).trim();
         const shortTitle = title.match(
           /^Exploring the TypeScript Compiler (Part \d+: .+)$/,
@@ -346,6 +355,7 @@ type PostFrontmatter = {
   title: string;
   slug: string;
   publishedAt: string;
+  draft?: boolean;
   category?: string;
   eyecatch?: string;
 };
@@ -382,7 +392,10 @@ function getPostFiles(): string[] {
   if (!fs.existsSync(postsDirectory)) {
     return [];
   }
-  return fs.readdirSync(postsDirectory).filter((file) => file.endsWith(".md"));
+  return fs.readdirSync(postsDirectory).filter((file) => {
+    if (!file.endsWith(".md")) return false;
+    return parsePost(file).frontmatter.draft !== true;
+  });
 }
 
 function parsePost(filename: string): {
