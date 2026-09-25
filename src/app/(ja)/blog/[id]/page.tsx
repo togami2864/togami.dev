@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getPosts, getPostById, getPostMetadataById } from "@/lib/posts";
+import { getPosts, getPostById, getPostMetadataById, getPostLanguagesById } from "@/lib/posts";
 import TableOfContents from "./TableOfContents";
 import styles from "./page.module.css";
 
@@ -19,14 +19,21 @@ export async function generateStaticParams() {
 }
 
 export function getArticleMetadata(id: string, locale: "ja" | "en"): Metadata {
-  const post = getPostMetadataById(id);
+  const post = getPostMetadataById(id, locale);
   const url = `${BASE_URL}${locale === "en" ? "/en" : ""}/blog/${id}`;
+  const languages = getPostLanguagesById(id);
 
   return {
     title: post.title,
     description: post.title,
     alternates: {
       canonical: url,
+      ...(languages.includes("ja") && languages.includes("en") && {
+        languages: {
+          ja: `${BASE_URL}/blog/${id}`,
+          en: `${BASE_URL}/en/blog/${id}`,
+        },
+      }),
     },
     openGraph: {
       type: "article",
@@ -60,7 +67,7 @@ const formatDate = (dateString: string): string => {
 };
 
 export async function BlogPostContent({ id, locale }: { id: string; locale: "ja" | "en" }) {
-  const post = await getPostById(id);
+  const post = await getPostById(id, locale);
   if (post.lang !== locale) throw new Error(`Wrong language for post: ${id}`);
   const prefix = locale === "en" ? "/en" : "";
 

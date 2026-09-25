@@ -103,7 +103,8 @@ function getDescendantLinks(node: Element): Element[] {
   return links;
 }
 
-function rehypeArticleSeries(currentPostId: string) {
+function rehypeArticleSeries(currentPostId: string, locale: "ja" | "en") {
+  const blogPath = locale === "en" ? "/en/blog/" : "/blog/";
   return (tree: Root) => {
     visit(tree, "element", (node: Element) => {
       if (node.tagName !== "ul") return;
@@ -123,7 +124,7 @@ function rehypeArticleSeries(currentPostId: string) {
           }
           if (itemLinks.length !== 1) return false;
           const href = itemLinks[0].properties.href;
-          return typeof href === "string" && href.startsWith("/blog/");
+          return typeof href === "string" && href.startsWith(blogPath);
         });
       if (!isArticleSeries) return;
 
@@ -147,7 +148,7 @@ function rehypeArticleSeries(currentPostId: string) {
           link.children = [{ type: "text", value: shortTitle }];
         }
 
-        if (link.properties.href === `/blog/${currentPostId}`) {
+        if (link.properties.href === `${blogPath}${currentPostId}`) {
           link.properties.ariaCurrent = "page";
         }
       }
@@ -364,6 +365,7 @@ type PostFrontmatter = {
 async function markdownToHtml(
   markdown: string,
   currentPostId: string,
+  locale: "ja" | "en",
 ): Promise<{ html: string; tableOfContents: TableOfContentsItem[] }> {
   const tableOfContents: TableOfContentsItem[] = [];
   const result = await unified()
@@ -379,7 +381,7 @@ async function markdownToHtml(
       theme: "github-dark",
       langs: [...SHIKI_LANGUAGES],
     })
-    .use(rehypeArticleSeries, currentPostId)
+    .use(rehypeArticleSeries, currentPostId, locale)
     .use(rehypeImageAttrs)
     .use(rehypeYouTubeEmbeds)
     .use(rehypeGitHubCards)
@@ -447,20 +449,40 @@ export async function getPosts(lang?: "ja" | "en"): Promise<{ contents: Post[] }
   return { contents: posts };
 }
 
-export async function getPostById(id: string): Promise<Post> {
-  const { frontmatter, content } = findPostById(id);
-  const { html, tableOfContents } = await markdownToHtml(content, id);
+export async function getPostById(id: string, locale: "ja" | "en"): Promise<Post> {
+  const { frontmatter, content } = findPostById(id, locale);
+  const { html, tableOfContents } = await markdownToHtml(content, id, locale);
 
   return createPost(id, frontmatter, html, tableOfContents);
 }
 
-export function getPostMetadataById(id: string): Post {
-  const { frontmatter } = findPostById(id);
+export function getPostMetadataById(id: string, locale: "ja" | "en"): Post {
+  const { frontmatter } = findPostById(id, locale);
 
   return createPost(id, frontmatter, "");
 }
 
-function findPostById(id: string): {
+export function getPostLanguagesById(id: string): Array<"ja" | "en"> {
+  return getPostFiles().flatMap((file) => {
+    const { frontmatter } = parsePost(file);
+    const slug = frontmatter.slug || file.replace(/\.md$/, "");
+    return slug === id ? [frontmatter.lang] : [];
+  });
+}
+
+export function getBilingualPostIds(): string[] {
+  const languagesById = new Map<string, Set<string>>();
+  for (const file of getPostFiles()) {
+    const { frontmatter } = parsePost(file);
+    const slug = frontmatter.slug || file.replace(/\.md$/, "");
+    const languages = languagesById.get(slug) ?? new Set<string>();
+    languages.add(frontmatter.lang);
+    languagesById.set(slug, languages);
+  }
+  return [...languagesById].filter(([, languages]) => languages.has("ja") && languages.has("en")).map(([id]) => id);
+}
+
+function findPostById(id: string, locale: "ja" | "en"): {
   frontmatter: PostFrontmatter;
   content: string;
 } {
@@ -468,11 +490,11 @@ function findPostById(id: string): {
   const filename = files.find((file) => {
     const { frontmatter } = parsePost(file);
     const slug = frontmatter.slug || file.replace(/\.md$/, "");
-    return slug === id;
+    return slug === id && frontmatter.lang === locale;
   });
 
   if (!filename) {
-    throw new Error(`Post not found: ${id}`);
+    throw new Error(`Post not found: ${locale}/${id}`);
   }
 
   return parsePost(filename);

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
+import { getBilingualPostIds } from "@/lib/posts";
 import "remark-github-blockquote-alert/alert.css";
 import "../globals.css";
 
@@ -42,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <Header locale="ja" />
+        <Header locale="ja" translatedPostIds={getBilingualPostIds()} />
         {children}
       </body>
     </html>

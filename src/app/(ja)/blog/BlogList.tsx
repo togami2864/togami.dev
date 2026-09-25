@@ -69,7 +69,7 @@ export function BlogList({ articles, locale }: { articles: Article[]; locale: Lo
           <h2 className={styles.yearTitle}>{year}</h2>
           <ul className={styles.postList}>
             {yearArticles.map((article) => (
-              <li key={`${article.type}-${article.id}`} className={styles.postItem}>
+              <li key={`${article.type}-${article.lang}-${article.id}`} className={styles.postItem}>
                 {article.type === "internal" ? (
                   <Link href={`${article.lang === "en" ? "/en" : ""}/blog/${article.id}`} className={styles.postLink}>
                     <span className={styles.postTitleWithIcon}>

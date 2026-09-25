@@ -8,13 +8,15 @@ import { TalkIcon } from "./icons/TalkIcon";
 import { RssIcon } from "./icons/RssIcon";
 import styles from "./Header.module.css";
 
-export const Header = ({ locale }: { locale: "ja" | "en" }) => {
+export const Header = ({ locale, translatedPostIds }: { locale: "ja" | "en"; translatedPostIds: string[] }) => {
   const pathname = usePathname();
   const prefix = locale === "en" ? "/en" : "";
   const section = pathname.replace(/^\/en(?=\/|$)/, "") || "/";
+  const articleId = section.startsWith("/blog/") ? section.slice("/blog/".length) : null;
+  const hasTranslation = articleId !== null && translatedPostIds.includes(articleId);
   const switchPath = locale === "en"
-    ? section.startsWith("/blog/") ? "/blog" : section
-    : section.startsWith("/blog/") ? "/en/blog" : `/en${section === "/" ? "" : section}`;
+    ? articleId ? hasTranslation ? `/blog/${articleId}` : "/blog" : section
+    : articleId ? hasTranslation ? `/en/blog/${articleId}` : "/en/blog" : `/en${section === "/" ? "" : section}`;
   const saveLanguage = (language: "ja" | "en") => {
     document.cookie = `site_lang=${language}; Path=/; Max-Age=31536000; SameSite=Lax`;
   };

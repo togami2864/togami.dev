@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
+import { getBilingualPostIds } from "@/lib/posts";
 import "remark-github-blockquote-alert/alert.css";
 import "../globals.css";
 
@@ -36,7 +37,7 @@ export default function EnglishLayout({ children }: Readonly<{ children: React.R
   return (
     <html lang="en">
       <body>
-        <Header locale="en" />
+        <Header locale="en" translatedPostIds={getBilingualPostIds()} />
         {children}
       </body>
     </html>

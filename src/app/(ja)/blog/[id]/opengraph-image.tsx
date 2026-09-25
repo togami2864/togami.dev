@@ -39,10 +39,9 @@ const formatDate = (dateString: string): string =>
     day: "2-digit",
   }).format(new Date(`${dateString}T00:00:00Z`));
 
-export default async function OpenGraphImage({ params }: Props) {
-  const { id } = await params;
+export async function renderPostImage(id: string, locale: "ja" | "en") {
   const [post, regularFontData, boldFontData] = await Promise.all([
-    getPostById(id),
+    getPostById(id, locale),
     regularFont,
     boldFont,
   ]);
@@ -149,4 +148,9 @@ export default async function OpenGraphImage({ params }: Props) {
       ],
     },
   );
+}
+
+export default async function OpenGraphImage({ params }: Props) {
+  const { id } = await params;
+  return renderPostImage(id, "ja");
 }
