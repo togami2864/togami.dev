@@ -6,7 +6,7 @@ publishedAt: "2026-09-12"
 category: "tech"
 ---
 
-This article is an expanded and revised version of the [tskaigi 2026 Day 2 talk, “A History of TypeScript Compiler Design Through Constraints and Historical Context”](https://2026.tskaigi.org/talks/38).
+This article is an expanded and revised version of [tskaigi 2026 Day 2 talk, “A History of TypeScript Compiler Design Through Constraints and Historical Context”](https://2026.tskaigi.org/talks/38).
 
 TypeScript's port to Go prompted a question: “Why not Rust?” One obstacle cited was the compiler's heavy use of circular references and its reliance on GC The TypeScript compiler has many other distinctive implementation choices as well.
 

@@ -22,13 +22,13 @@ When Microsoft officially announced [typescript-go](https://github.com/microsoft
 
 [A 10x faster TypeScript — with Anders Hejlsberg](https://www.youtube.com/watch?v=pNlq-EVld70)
 
-Microsoft has already explained much of the reasoning:
+The team has already explained much of the reasoning:
 
 - [typescript-go Discussion #411](https://github.com/microsoft/typescript-go/discussions/411)
 - [Announcing TypeScript 7.0 Beta](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0-beta/)
 - [reddit](https://www.reddit.com/r/javascript/comments/1j8s441/a_10x_faster_typescript/)
 
-The reason Go was chosen seems to come down to this: it makes the port relatively straightforward while delivering good performance.
+The reason Go was chosen seems to come down to this: it makes the port straightforward while delivering good performance.
 
 ## A Port, Not a Rewrite
 
@@ -36,7 +36,7 @@ TypeScript has no specification that covers all of its behavior.[^1] The compile
 
 Rewriting the compiler while changing its design and data structures, yet preserving all of its behavior, would take an enormous amount of work. That makes a port that carries over the behavior as it is a viable option.
 
-### The Obstacle of Circular References
+### Circular References
 
 Circular references posed another major obstacle for Rust. Rust's ownership model makes data structures with circular references difficult to represent.
 
@@ -52,23 +52,18 @@ The port had to preserve the existing structures while improving performance. Go
 Part 6 looks more closely at the performance-related properties in this list.
 
 :::column[Rust and Circular References]
-Of course, it is technically possible to reproduce these structures in Rust. Options include:
+Tt is technically possible to reproduce these structures in Rust.
 
 - Combining Rc and Weak
 - Representing them with Vec and Index
-- Using Arena Allocator + Index as an extension of that approach
+- Using Arena Allocator + Index
 - Using unsafe
 
 These are all common ways to work around ownership constraints. Each requires careful thought about lifetimes, ownership, and how references are held, and each has tradeoffs.
 
-There is a classic exercise that makes this complexity easy to experience: **doubly linked list**.
+There is a classic exercise that makes this complexity easy to experience. It's **doubly linked list**.
 
-- push_front
-- pop_front
-- push_back
-- pop_back
-
-Implementing these operations quickly makes the complexity clear 🤓
+Implementing the basic operations like `push_front`, `pop_front` and `push_back` quickly makes the complexity clear 🤓
 
 :::
 
@@ -108,7 +103,7 @@ export function createTypeChecker(host: TypeCheckerHost): TypeChecker {
 }
 ```
 
-This style happened to be well suited to mechanical conversion into Go code that defines a struct and attaches methods to it. The local variables captured by the closure map directly to struct fields, and the inner functions map to methods.
+This style happened to be well suited to transform into Go code that defines a struct and attaches methods to it. The local variables captured by the closure map directly to struct fields, and the inner functions map to methods.
 
 ```go
 // The local variables of createTypeChecker become fields
@@ -162,8 +157,6 @@ To address this, someone experimented with refactoring checker.ts to use classes
 
 The tests passed, but the experiment was not adopted. Internal benchmarks also measured type checking slowdowns of 16.6% to 24.1%.
 
-Explaining the cause in detail would require some background on how JavaScript engines work, so here is a brief outline.
-
 With classes, references to local variables in the closure become accesses through the instance object, `this`, in a form such as `this.property`.
 
 An expression like `this.property` is an object property access. Engines such as V8 use hidden classes and inline caches to make those accesses fast. Even so, they may cost more than referring to a closure's local variable by name.
@@ -190,6 +183,6 @@ Continue to [Exploring the TypeScript Compiler Part 2: Inside the TypeScript Com
 
 [^2]: JavaScript did not have class syntax when TypeScript development began.
 
-[^3]: For a refresher on closures, see [https://jsprimer.net/basic/function-scope/#closure](https://jsprimer.net/basic/function-scope/#closure).
+[^3]: [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures#closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures#closure).
 
 [^4]: [TypeScript Origins: The Documentary](https://www.youtube.com/watch?v=10qowKUW82U&t=483s)

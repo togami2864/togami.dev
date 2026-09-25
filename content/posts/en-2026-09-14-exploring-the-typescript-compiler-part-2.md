@@ -100,7 +100,7 @@ This object holds information such as:
 
 - The name
 - Where it was declared, including references to the original AST nodes (`declarations`)
-- The kind of symbol (`BlockScopedVariable`, `Function`, `Class`, and so on)
+- The kind of symbol (`BlockScopedVariable`, `Function`, `Class`, etc)
 
 A `SymbolTable` is straightforward: it is a Map that records Symbols by name.
 
@@ -130,17 +130,17 @@ After binding, the result looks like the following diagram.[^3]
 
 <figure class="figure-wide figure-scrollable">
   <img src="/images/posts/2026-09-14-exploring-the-typescript-compiler-part-2/node-symbol-bidirectional-link.svg" alt="Mutual references between a declaration AST node and a Symbol" />
-  <figcaption>Mutual references between a declaration AST node and a Symbol (parameters <code>a</code> and <code>b</code> are omitted for simplicity)</figcaption>
+  <figcaption>Mutual references between a declaration AST node and a Symbol (parameters <code>a</code> and <code>b</code> are omitted)</figcaption>
 </figure>
 
 Next, Binder reaches `add(1, "2")`. Although this code references the `add` function, **Binder does not resolve the name at this point.** Binder only sets up the information needed for control flow analysis. Later, when Checker needs the target of the reference, it resolves the Symbol for the corresponding function declaration.
 
 :::column[TypeScript and C#]
-TypeScript and Roslyn, the C# compiler, have very similar internal concepts and terminology. Both were developed at Microsoft and have the same architect.
+TypeScript and Roslyn, the C# compiler, have very similar internal concepts and terminology. I guess the reason why is both were developed at Microsoft and have the same architect.
 
 [Roslyn Overview](https://github.com/dotnet/roslyn/blob/main/docs/wiki/Roslyn-Overview.md)
 
-The Roslyn wiki above explains terms such as Symbol and Compilation, and mentions a Bind phase. Similar concepts appear in the TypeScript compiler, with fairly similar responsibilities.
+The Roslyn wiki explains terms such as Symbol and Compilation, and mentions a Bind phase. Similar concepts appear in the TypeScript compiler, with fairly similar responsibilities.
 
 Roslyn is important to this series, and Part 4 discusses it in detail.
 
