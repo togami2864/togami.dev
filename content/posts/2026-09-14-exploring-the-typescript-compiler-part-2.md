@@ -14,7 +14,7 @@ category: "tech"
 - [Exploring the TypeScript Compiler Part 1: Why Go?](/blog/exploring-the-typescript-compiler-part-1)
 - [Exploring the TypeScript Compiler Part 2: Inside the TypeScript Compiler](/blog/exploring-the-typescript-compiler-part-2)
 - [Exploring the TypeScript Compiler Part 3: Why TypeScript?](/blog/exploring-the-typescript-compiler-part-3)
-- Part 4: Roslyn and the Red-Green Tree（Coming soon）
+- [Exploring the TypeScript Compiler Part 4: Roslyn and the Red-Green Tree](/blog/exploring-the-typescript-compiler-part-4)
 - Part 5: JavaScript Madness🫠（Coming soon）
 - Part 6: What Changes with Go（Coming soon）
 
