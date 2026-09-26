@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getPosts, getPostById, getPostMetadataById, getPostLanguagesById } from "@/lib/posts";
+import CopyArticleUrlButton from "./CopyArticleUrlButton";
 import TableOfContents from "./TableOfContents";
 import styles from "./page.module.css";
 
@@ -69,7 +70,12 @@ const formatDate = (dateString: string): string => {
 export async function BlogPostContent({ id, locale }: { id: string; locale: "ja" | "en" }) {
   const post = await getPostById(id, locale);
   if (post.lang !== locale) throw new Error(`Wrong language for post: ${id}`);
+  const { contents: posts } = await getPosts(locale);
+  const currentIndex = posts.findIndex((item) => item.id === id);
+  const previousPost = posts[currentIndex + 1];
+  const nextPost = currentIndex > 0 ? posts[currentIndex - 1] : undefined;
   const prefix = locale === "en" ? "/en" : "";
+  const articleUrl = `${BASE_URL}${prefix}/blog/${id}`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -87,7 +93,7 @@ export async function BlogPostContent({ id, locale }: { id: string; locale: "ja"
       name: "togami",
       url: BASE_URL,
     },
-    url: `${BASE_URL}${prefix}/blog/${id}`,
+    url: articleUrl,
     inLanguage: locale,
     ...(post.eyecatch && { image: post.eyecatch }),
   };
@@ -122,6 +128,38 @@ export async function BlogPostContent({ id, locale }: { id: string; locale: "ja"
               data-lang={locale}
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
+            <div className={styles.shareActions}>
+              <CopyArticleUrlButton url={articleUrl} />
+            </div>
+            {(previousPost || nextPost) && (
+              <nav
+                className={styles.postNav}
+                aria-label={locale === "ja" ? "前後の記事" : "Adjacent posts"}
+              >
+                {previousPost && (
+                  <Link
+                    href={`${prefix}/blog/${previousPost.id}`}
+                    className={styles.postNavLink}
+                  >
+                    <span className={styles.postNavLabel}>
+                      ← {locale === "ja" ? "前の記事" : "Previous post"}
+                    </span>
+                    <span className={styles.postNavTitle}>{previousPost.title}</span>
+                  </Link>
+                )}
+                {nextPost && (
+                  <Link
+                    href={`${prefix}/blog/${nextPost.id}`}
+                    className={`${styles.postNavLink} ${styles.nextPost}`}
+                  >
+                    <span className={styles.postNavLabel}>
+                      {locale === "ja" ? "次の記事" : "Next post"} →
+                    </span>
+                    <span className={styles.postNavTitle}>{nextPost.title}</span>
+                  </Link>
+                )}
+              </nav>
+            )}
             <footer className={styles.footer}>
               <Link href={`${prefix}/blog`} className={styles.backLink}>
                 ← Back to list
