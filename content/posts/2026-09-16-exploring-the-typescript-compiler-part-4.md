@@ -37,7 +37,7 @@ category: "tech"
 
 コンパイラとして動作し、API 経由で中間解析結果へアクセスでき、十分な応答速度も出せる。この要件を満たすために生まれた実装パターンが赤緑木(Red-Green Tree)です。
 
-[Persistence, façades and Roslyn’s red-green trees](https://ericlippert.com/2012/06/08/red-green-trees/) というブログポストでは赤緑木のデザインについて書いている非常に貴重な資料です。そこで挙げられたデータ構造に求められた5つの性質について見ていきます。
+[Persistence, façades and Roslyn’s red-green trees](https://ericlippert.com/2012/06/08/red-green-trees/) というブログポストは赤緑木のデザインについて書いている非常に貴重な資料です。そこで挙げられたデータ構造に求められた5つの性質について見ていきます。
 
 ### 1. immutable
 
@@ -89,10 +89,7 @@ a.age = 10;
 
 一般的なエディタや IDE の操作を思い浮かべてみてください。基本的にはユーザーが開いた任意のファイルやノード起点で解析が始まります。常に全てを解析してから表示するとなると応答が遅くなりがちで体験として良くないからです。
 
-これを実現するために木に自身の親へのポインタを持たせるという手法があります。木構造は通常子への参照を持っているのみですが、それに加えて親への参照も持ちます。上下に木を辿れる状態だと楽に次のような文脈情報に素早くアクセスできます。
-
-- 現在位置
-- 所属する function やスコープ
+これを実現するために木に自身の親へのポインタを持たせるという手法があります。木構造は通常子への参照を持っているのみですが、それに加えて親への参照も持ちます。上下に木を辿れる状態だと楽に現在位置や所属する function やスコープなどの文脈情報に素早くアクセスできます。
 
 ### 4. Map a node to a character offset
 
@@ -104,22 +101,22 @@ a.age = 10;
 
 ```js
 const a = { name: "koupenchan", age: 9 };
-a.age = 10; // <- この時点で { name: "koupenchan", age: 9　} が上書きされて存在しなくなる
+a.age = 10; // 元のオブジェクトが書き換わり、aから更新前の状態を参照できなくなる
 ```
 
 ```js
-const a = { name: "koupenchan", age: 9 };
-const b = { ...a, age: 10 };
-console.log(a, b); // aとbは別物なのでbを作った後も過去バージョンと言えるaが残っている
+const oldVersion = { name: "koupenchan", age: 9 };
+const newVersion = { ...oldVersion, age: 10 };
+
+console.log(oldVersion.age); // 9
+console.log(newVersion.age); // 10
 ```
 
-Undo, Redo といった編集前に戻りたいといった操作のため必要になります。また、少し古いですが Redux の TimeTravel debugging もこの一例と言えるでしょう。
-
-[Live React: Hot Reloading with Time Travel](https://www.youtube.com/watch?v=xsSnOQynTHs)
+構文木でもノードが immutable なら、変更されていないノードを旧版と新版から安全に参照できます。旧版のルートへの参照を残しておけば、更新後も旧版の構文木を利用できます。
 
 ### Structural Sharing
 
-5で Persistent に触れましたが、元ブログでは Structural Sharing の方に重きを置いている感じがしたので触れておきます。
+前節では persistence を更新後も旧版を利用できる性質として説明しました。元記事では特に、編集時に既存ノードの大部分を再利用できることを persistence と呼んでいます。この再利用を効率よく実現するのが structural sharing　です。
 
 > By persistence I mean the ability to reuse most of the existing nodes in the tree when an edit is made to the text buffer. Since the nodes are immutable, there’s no barrier to reusing them, as I’ve discussed many times on this blog. We need this for performance; we cannot be re-parsing huge wodges of text every time you hit a key. We need to re-lex and re-parse only the portions of the tree that were affected by the edit because we are potentially re-doing this analysis between every keystroke.
 >
@@ -158,23 +155,25 @@ var t = 1 * 2 + 6;
   <figcaption><code>4</code> を <code>6</code> に変更したときの差分</figcaption>
 </figure>
 
-ほんの一箇所変えただけなので木の大部分はほとんど同じ形をしています。ここで、素朴に木全体をコピーして新版を作り、過去の版も保持するとします。immutability のために必要なのは変更したノードとその先祖の作り直しですが、全体をコピーする実装では、変更していない部分まで複製してしまいます。
+ほんの一箇所変えただけなので木の大部分はほとんど同じ形をしています。ここで、素朴に木全体をコピーして新版を作り、過去の版も保持するとします。
+
+素朴に全体をコピーする実装では変更していない部分まで複製してしまいます。
 これをもっと巨大で依存も複雑なコードベースで同じように N 回編集すると考えてみてください。
 
 なんだかメモリを大量に圧迫しそうな気がしてきましたね。
 
-一方で木の大部分は同じということ、immutable に保ってきたおかげで、同じノードを旧版と新版の両方から参照しても書き換わる心配がないことに注目します。ここでのアイデアは非常に明白です。同じところは共有してしまえばいいのです。
+一方で編集をしても**木の大部分は同じケースが多い**ということ、**immutable に保ってきたおかげで、同じノードを旧版と新版の両方から参照しても書き換わる心配がない**ことに注目します。ここでのアイデアは非常に明白です。同じところは旧版と共有してしまえばいいのです。
 
 <figure class="embed-image embed-image-wide figure-scrollable">
   <img src="/images/posts/2026-09-16-exploring-the-typescript-compiler-part-4/structural-sharing-syntax-tree.svg" alt="旧版と新版の構文木が、変更されていない乗算の部分木とセミコロンのノードを共有している図" />
   <figcaption>旧版と新版で変更されていない部分木とセミコロンのノードを共有する structural sharing</figcaption>
 </figure>
 
-これにより、必要な旧版を保持しながら immutable も維持でき、木全体をコピーする場合よりメモリ消費を抑えられます。
+これにより、必要な旧版を保持しながら immutable も維持でき木全体をコピーする場合よりメモリ消費を抑えられます。
 
 ## 両立するための問題点
 
-実装する際に求められた5つ(+ 1)の性質を見てきました。しかし全てを両立する**immutableかつ永続性があり、親ポインタにアクセスできてコメントなども保持できる木**は、実現が非常に困難です。
+実装する際に求められた5つの性質を見てきました。しかし全てを両立する**immutableかつ永続性があり、親ポインタにアクセスできてコメントなども保持できる木**は、実現が非常に困難です。
 
 まず第一に**親子で相互に参照するかつ immutable でなくてはいけないという点です。**
 immutable, persistent の説明では親から子方向へのみの木で考えました。しかし、親方向へも参照を持つ木では同じことは成立しません。
@@ -252,8 +251,7 @@ RedTree は GreenTree のラッパーで2つの大きな特徴を持ちます。
 ルートの開始位置は0です。式`1 * 2 + 4`は、その前にある`var t =`の7文字と直後の空白1文字を合わせた width が8なので、開始位置は8になります。
 
 次に`4`の開始位置を求めます。式の開始位置8に、左辺の`1 * 2`の width である5と、演算子`+`および前後の空白を合わせた3文字を足します。`8 + 5 + 3 = 16`なので、`4`の開始位置は16です。
-
-図では空白の Trivia を省略しているため、`+`トークン自体の width は1ですが、前後の空白も含めた幅は3文字です。また、親から辿ってきているので、`4`の親ノードが何かということも知ることができます。簡略化すると、`4`に対する Red Node は次のようになります。
+また、親から辿ってきているので、`4`の親ノードが何かということも知ることができます。簡略化すると、`4`に対する Red Node は次のようになります。
 
 ```csharp
 var redNode = new RedNode
@@ -266,7 +264,7 @@ var redNode = new RedNode
 
 全ての Green Node を一度にラップする必要はなく、必要なノードに至る経路に沿って Red Node を遅延生成することで、文脈情報にアクセスできます。
 
-Red Tree も、利用者には immutable なインターフェースを提供します。内部では遅延生成した子をキャッシュしますが、公開する構文情報が後から変わることはありません。編集後は、新しい Green Tree に対して新しい Red Tree を必要に応じて生成します。旧版の Red Tree を参照している利用者は、引き続き旧版を参照できます。
+編集後は新しい Green Tree に対して新しい Red Tree を必要に応じて生成します。旧版の Red Tree を参照している利用者は、引き続き旧版を参照できます。
 
 親や絶対位置を持たない Green Node は版をまたいで共有し、親や絶対位置を持つ Red Node は各版の文脈に合わせて作ります。この役割分担によって、構造共有と親・位置へのアクセスを両立しています。
 
@@ -278,5 +276,4 @@ Roslyn から生まれ、複数の性質を両立する Red Green Tree につい
 
 それがなぜなのか、代わりにどうしているのか JavaScript の制約を見ながら追っていきます。
 
-
-[^1]: `const` が禁止するのは単に変数への再代入なので本当に宣言したい場合は`Object.freeze`が必要
+[^1]: この例はイメージのためであり、実際にオブジェクト自体は不変ではありません。`const` が禁止するのは単に変数への再代入です。
