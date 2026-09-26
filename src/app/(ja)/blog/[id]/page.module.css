@@ -131,6 +131,11 @@
     color: var(--text-primary);
     opacity: 1;
   }
+
+  .tocLink[aria-current="location"] {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
 }
 
 .content p {
