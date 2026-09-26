@@ -29,7 +29,7 @@ Part 5では、TypeScript コンパイラが赤緑木を採用せず、独自の
 - [Exploring the TypeScript Compiler Part 0: Overview](/blog/exploring-the-typescript-compiler-part-0)
 - [Exploring the TypeScript Compiler Part 1: Why Go?](/blog/exploring-the-typescript-compiler-part-1)
 - [Exploring the TypeScript Compiler Part 2: Inside the TypeScript Compiler](/blog/exploring-the-typescript-compiler-part-2)
-- Part 3: Why TypeScript（Coming soon）
+- [Exploring the TypeScript Compiler Part 3: Why TypeScript?](/blog/exploring-the-typescript-compiler-part-3)
 - Part 4: Roslyn and the Red-Green Tree（Coming soon）
 - Part 5: JavaScript Madness🫠（Coming soon）
 - Part 6: What Changes with Go（Coming soon）

@@ -13,7 +13,7 @@ category: "tech"
 - [Exploring the TypeScript Compiler Part 0: Overview](/blog/exploring-the-typescript-compiler-part-0)
 - [Exploring the TypeScript Compiler Part 1: Why Go?](/blog/exploring-the-typescript-compiler-part-1)
 - [Exploring the TypeScript Compiler Part 2: Inside the TypeScript Compiler](/blog/exploring-the-typescript-compiler-part-2)
-- Part 3: Why TypeScript（Coming soon）
+- [Exploring the TypeScript Compiler Part 3: Why TypeScript?](/blog/exploring-the-typescript-compiler-part-3)
 - Part 4: Roslyn and the Red-Green Tree（Coming soon）
 - Part 5: JavaScript Madness🫠（Coming soon）
 - Part 6: What Changes with Go（Coming soon）
@@ -135,7 +135,7 @@ Binder による処理を行った結果次の図のような状態になりま�
 次に Binder は`add(1, "2")`という部分に到達します。ここでは`add`関数を参照していますが、**Binder はこの時点で名前を解決しません。** Binder は制御フロー解析に必要な情報だけを設定します。後続の Checker は参照先が必要になった時点で、`add`に対応する関数宣言の Symbol を解決します。
 
 :::column[TypeScript と C#]
-TypeScript は C# のコンパイラである Roslyn と、内部の概念や用語が非常に似通っています。どちらも Microsoft で開発され、アーキテクトも同じです。
+TypeScript は C# のコンパイラである Roslyn と、内部の概念や用語が非常に似通っています。どちらも Microsoft で開発され、アーキテクトも同じなので当然っちゃ当然かもしれませんが。。
 
 [Roslyn Overview](https://github.com/dotnet/roslyn/blob/main/docs/wiki/Roslyn-Overview.md)
 
@@ -151,9 +151,9 @@ Roslyn の存在は非常に重要で、本シリーズの Part 4 で詳しく�
 
 Checker は`add`の参照を見つけると`getResolvedSymbol`という関数を使い、それが指している Symbol を解決します。
 
-検査対象にでくわすと、図中2のようにその名前で登録されているシンボルをそのスコープの Symbol Table から探します。
+検査対象にでくわすと、図中2のようにその名前で登録されているシンボルをそのスコープの SymbolTable から探します。
 
-そして3のように Symbol にさえ辿り着けば、その名前を宣言している AST ノードへ `declarations` から辿り着けます。
+そして Symbol にさえ辿り着けば、その名前を宣言している AST ノードへ `declarations` から辿り着けます。
 
 <figure class="figure-wide figure-scrollable">
   <img src="/images/posts/2026-09-14-exploring-the-typescript-compiler-part-2/checker-symbol-resolution-flow.svg" alt="Checkerが識別子addからSymbolを解決する流れ" />
@@ -183,7 +183,7 @@ Bind の章で宣言と Symbol の対応関係の構築や SymbolTable の構築
   <figcaption>Checker による型情報の遅延解決。クエリに応じてBind済みSourceFile群を辿って解決する</figcaption>
 </figure>
 
-Language Service は Program と TypeChecker を保持します。補完やエラー表示で型情報が必要になると、TypeChecker に問い合わせます。それ以外の応用として typescript-eslint があります。
+Language Service はこの仕組みを使っている代表的な例で補完やエラー表示で型情報が必要な部分から優先的に　Checker に問い合わせます。それ以外の応用として typescript-eslint があります。
 
 [typescript-eslint](https://github.com/typescript-eslint/typescript-eslint)
 
@@ -206,7 +206,7 @@ node.flowNode = ... // CFA
 node.parent = ... // Pointer to parent
 ```
 
-TypeScript コンパイラでは、構文を表す AST に直接 symbol やフロー解析のための情報、親ノードへのポインタ、スコープの情報などを詰め込んでいきます。
+TypeScriptコンパイラでは、構文を表す AST に直接 symbol やフロー解析のための情報、親ノードへのポインタ、スコープの情報などを詰め込んでいきます。
 
 結果として構文木+意味解析要素が1つの可変ツリーに同居します。別の層として持たせず1つの AST に直書きするわけです。
 
@@ -222,7 +222,9 @@ Part 1で触れた移植上の課題は、こうした参照関係を既存の�
 
 ## 次回
 
-このパートでは TypeScript コンパイラの大まかな流れと、独特な部分について触れました。次の Part 3 からは、なぜこのような構造になっているのかに、時代背景から迫っていきます。
+このパートでは TypeScriptコンパイラの大まかな流れと、独特な部分について触れました。次の Part 3 からは、なぜこのような構造になっているのか、時代背景から迫っていきます。
+
+[Exploring the TypeScript Compiler Part 3: Why TypeScript?](/blog/exploring-the-typescript-compiler-part-3)へ続きます。
 
 [^1]: 図上ではわかりやすさのために Scanner -> Parser としていますが、実際の実装は Parser から Scanner を呼び出して tokenize しています。
 

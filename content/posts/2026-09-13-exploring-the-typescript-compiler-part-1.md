@@ -11,7 +11,7 @@ category: "tech"
 - [Exploring the TypeScript Compiler Part 0: Overview](/blog/exploring-the-typescript-compiler-part-0)
 - [Exploring the TypeScript Compiler Part 1: Why Go?](/blog/exploring-the-typescript-compiler-part-1)
 - [Exploring the TypeScript Compiler Part 2: Inside the TypeScript Compiler](/blog/exploring-the-typescript-compiler-part-2)
-- Part 3: Why TypeScript（Coming soon）
+- [Exploring the TypeScript Compiler Part 3: Why TypeScript?](/blog/exploring-the-typescript-compiler-part-3)
 - Part 4: Roslyn and the Red-Green Tree（Coming soon）
 - Part 5: JavaScript Madness🫠（Coming soon）
 - Part 6: What Changes with Go（Coming soon）
@@ -40,7 +40,7 @@ TypeScript はその挙動を網羅した仕様が存在しません[^1]。コ�
 
 さらに Rust にとって大きな障壁である循環参照の問題がありました。Rust は所有権モデルの都合上、循環参照を持つデータ構造を表現するのが一筋縄では行きません。
 
-既存実装は GC を前提にしたグラフ構造を多用し、ノードを上方向と下方向の両方へたどります。この構造を Rust のイディオムに合わせて作り直すより、GC つき言語の方が既存の構造を保ったまま素直に移植できたわけです。
+既存実装は GC を前提にしてグラフ構造を多用し、ノードを上方向と下方向の両方へたどります。この構造を Rust のイディオムに合わせて作り直すより、GC つき言語の方が既存の構造を保ったまま素直に移植できたわけです。
 
 今回の移植では、既存の構造を保ちやすいことと、性能を改善できることの両方が求められました。Go は、それぞれに適した性質を備えています。
 
@@ -70,7 +70,7 @@ TypeScript はその挙動を網羅した仕様が存在しません[^1]。コ�
 
 といった操作を実装すると、その煩雑さをすぐに実感できます。
 
-日本語では [連結リストを実装して学ぶRustの所有権](https://levtech.jp/media/article/column/detail_787/)という記事が理解に役立ちます。
+日本語では [連結リストを実装して学ぶRustの所有権](https://levtech.jp/media/article/column/detail_787/)という記事が理解に役立つと思います。
 
 また、だいたい Rust やってると一度はお世話になる[Rustの `Arc` を読む(1): Arc/Rcの基本](https://qiita.com/qnighy/items/4bbbb20e71cf4ae527b9)の解説も非常に参考になります。
 
@@ -166,8 +166,6 @@ port の初期には TypeScript コンパイラのコードから、構文的に
 
 テストは通過したものの、この実験は採用には至りませんでした。また、内部ベンチマークでは型チェックが16.6〜24.1%遅くなることも計測されました。
 
-その要因について、JS エンジンのざっくりとした仕組みを知っている必要があるため、詳細は省きますが簡潔に紹介します。
-
 Class にすることによってクロージャ内のローカル変数の参照は、インスタンスオブジェクトである `this` を介した `this.property` のような形になります。
 
 一方、`this.property` はオブジェクトのプロパティアクセスです。V8 などのエンジンは hidden class とインラインキャッシュを利用して、このアクセスを高速化します。それでも、クロージャー内のローカル変数を名前で参照する場合より高いコストになる可能性があります。
@@ -192,7 +190,7 @@ Go が選ばれた背景には、既存のデータ構造やコードスタイ�
 
 [^1]: 実は初期バージョン(v1.8位)には仕様書が存在したが、すぐに更新されなくなった。[TypeScript Language Specification（アーカイブ）](https://github.com/microsoft/TypeScript/blob/v4.9.5/doc/TypeScript%20Language%20Specification%20-%20ARCHIVED.pdf)
 
-[^2]: TypeScript の開発が始まった当時、JavaScript には Class 構文がありませんでした。
+[^2]: 当時 JavaScript には Class 構文がなかったからかもしれない
 
 [^3]: クロージャを忘れた方は [https://jsprimer.net/basic/function-scope/#closure](https://jsprimer.net/basic/function-scope/#closure)へ Go
 
