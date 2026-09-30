@@ -13,10 +13,10 @@ This is Part 2 of an expanded and revised version of the [tskaigi 2026 Day 2 tal
 - [Exploring the TypeScript Compiler Part 0: Overview](/en/blog/exploring-the-typescript-compiler-part-0)
 - [Exploring the TypeScript Compiler Part 1: Why Go?](/en/blog/exploring-the-typescript-compiler-part-1)
 - [Exploring the TypeScript Compiler Part 2: Inside the TypeScript Compiler](/en/blog/exploring-the-typescript-compiler-part-2)
-- Part 3: Why TypeScript (Coming soon)
-- Part 4: Roslyn and the Red-Green Tree (Coming soon)
-- Part 5: JavaScript Madness🫠 (Coming soon)
-- Part 6: What Changes with Go (Coming soon)
+- [Exploring the TypeScript Compiler Part 3: Why TypeScript?](/en/blog/exploring-the-typescript-compiler-part-3)
+- [Exploring the TypeScript Compiler Part 4: Roslyn and the Red-Green Tree](/en/blog/exploring-the-typescript-compiler-part-4)
+- [Exploring the TypeScript Compiler Part 5: JavaScript Madness🫠](/en/blog/exploring-the-typescript-compiler-part-5)
+- [Exploring the TypeScript Compiler Part 6: What Go Unlocks](/en/blog/exploring-the-typescript-compiler-part-6)
 
 In the previous part, I explained that one reason for choosing Go was that it made it easier to port the compiler while preserving its existing data structures. To understand those structures, this part follows the path from source code to type checking.
 

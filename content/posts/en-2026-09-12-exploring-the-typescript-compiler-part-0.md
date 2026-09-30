@@ -8,7 +8,7 @@ category: "tech"
 
 This article is an expanded and revised version of [tskaigi 2026 Day 2 talk, “A History of TypeScript Compiler Design Through Constraints and Historical Context”](https://2026.tskaigi.org/talks/38).
 
-TypeScript's port to Go prompted a question: “Why not Rust?” One obstacle cited was the compiler's heavy use of circular references and its reliance on GC The TypeScript compiler has many other distinctive implementation choices as well.
+TypeScript's port to Go prompted a question: “Why not Rust?” One obstacle cited was the compiler's heavy use of circular references and its reliance on GC. The TypeScript compiler has many other distinctive implementation choices as well.
 
 These choices are not simply unusual. They reflect constraints such as the era in which TypeScript was created, JavaScript as its runtime environment, editor integration, and backward compatibility. As the scale of the code it handled grew, it also became harder to improve performance through JavaScript optimizations alone.
 
@@ -29,7 +29,7 @@ Finally, Part 6 explains how the Go port improves performance. It examines how c
 - [Exploring the TypeScript Compiler Part 0: Overview](/en/blog/exploring-the-typescript-compiler-part-0)
 - [Exploring the TypeScript Compiler Part 1: Why Go?](/en/blog/exploring-the-typescript-compiler-part-1)
 - [Exploring the TypeScript Compiler Part 2: Inside the TypeScript Compiler](/en/blog/exploring-the-typescript-compiler-part-2)
-- Part 3: Why TypeScript (Coming soon)
-- Part 4: Roslyn and the Red-Green Tree (Coming soon)
-- Part 5: JavaScript Madness🫠 (Coming soon)
-- Part 6: What Changes with Go (Coming soon)
+- [Exploring the TypeScript Compiler Part 3: Why TypeScript?](/en/blog/exploring-the-typescript-compiler-part-3)
+- [Exploring the TypeScript Compiler Part 4: Roslyn and the Red-Green Tree](/en/blog/exploring-the-typescript-compiler-part-4)
+- [Exploring the TypeScript Compiler Part 5: JavaScript Madness🫠](/en/blog/exploring-the-typescript-compiler-part-5)
+- [Exploring the TypeScript Compiler Part 6: What Go Unlocks](/en/blog/exploring-the-typescript-compiler-part-6)

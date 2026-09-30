@@ -14,7 +14,7 @@ category: "tech"
 - [Exploring the TypeScript Compiler Part 3: Why TypeScript?](/blog/exploring-the-typescript-compiler-part-3)
 - [Exploring the TypeScript Compiler Part 4: Roslyn and the Red-Green Tree](/blog/exploring-the-typescript-compiler-part-4)
 - [Exploring the TypeScript Compiler Part 5: JavaScript Madness🫠](/blog/exploring-the-typescript-compiler-part-5)
-- Part 6: What Changes with Go（Coming soon）
+- [Exploring the TypeScript Compiler Part 6: What Go Unlocks](/blog/exploring-the-typescript-compiler-part-6)
 
 ソースコードの編集操作は人間が行うにしろ Agent が行うにしろ、多くのケースで巨大な構文木のごく一部に対する変更です。ツールにはその変更に関係する箇所だけを再計算し、フィードバックを素早く返すことが求められます。
 

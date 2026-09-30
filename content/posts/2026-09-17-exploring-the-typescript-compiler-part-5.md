@@ -14,7 +14,7 @@ category: "tech"
 - [Exploring the TypeScript Compiler Part 3: Why TypeScript?](/blog/exploring-the-typescript-compiler-part-3)
 - [Exploring the TypeScript Compiler Part 4: Roslyn and the Red-Green Tree](/blog/exploring-the-typescript-compiler-part-4)
 - [Exploring the TypeScript Compiler Part 5: JavaScript Madness🫠](/blog/exploring-the-typescript-compiler-part-5)
-- Part 6: What Changes with Go（Coming soon）
+- [Exploring the TypeScript Compiler Part 6: What Go Unlocks](/blog/exploring-the-typescript-compiler-part-6)
 
 前回は同じ Microsoft が開発している C#のコンパイラ Roslyn に言及し、エディタ統合をするために必要な性質やそれを実現したデータ構造である赤緑木について触れました。
 
@@ -131,7 +131,7 @@ C#の言語 Designer で TypeScript の初期コンパイラの実装にも関�
 
 次回は"Go だから速くなった"からより理解を深めるために具体的に何が改善されたのかを追います。
 
-Part 6: What Changes with Go（Coming soon）へ続きます。
+[Part 6: What Go Unlocks](/blog/exploring-the-typescript-compiler-part-6)へ続きます。
 
 [^1]: ブラウザの Web Worker はぎりあった
 
