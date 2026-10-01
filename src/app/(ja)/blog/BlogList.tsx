@@ -44,9 +44,24 @@ const groupByYear = (articles: Article[]): Map<number, Article[]> => {
   return grouped;
 };
 
+const getAllArticles = (articles: Article[], locale: Locale): Article[] => {
+  const preferredPosts = new Map<string, Article>();
+  for (const article of articles) {
+    if (article.type !== "internal") continue;
+    if (!preferredPosts.has(article.id) || article.lang === locale) {
+      preferredPosts.set(article.id, article);
+    }
+  }
+  return articles.filter(
+    (article) => article.type === "external" || preferredPosts.get(article.id) === article,
+  );
+};
+
 export function BlogList({ articles, locale }: { articles: Article[]; locale: Locale }) {
   const [filter, setFilter] = useState<Filter>(locale);
-  const visible = articles.filter((article) => filter === "all" || isVisibleInLocale(article.lang, filter));
+  const visible = filter === "all"
+    ? getAllArticles(articles, locale)
+    : articles.filter((article) => isVisibleInLocale(article.lang, filter));
   const articlesByYear = groupByYear(visible);
 
   return (
