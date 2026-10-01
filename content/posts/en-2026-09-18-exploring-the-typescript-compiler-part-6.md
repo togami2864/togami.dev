@@ -135,7 +135,7 @@ Across Parts 1–6, we have looked at how the TypeScript compiler works, its his
 - Go has garbage collection, which makes it easier to keep the existing reference structures. Its coding style also suited the port.
 - By keeping the existing structure while adding native execution, better memory layout, and parallel processing, the port can reduce the impact of JavaScript's limits.
 
-[^1]: For an overview, I recommend [How JavaScript engines run source code: bytecode and JIT compilation](https://zenn.dev/canalun/articles/exec_javascript_beyond_ast#js%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%81%AF%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E3%81%A9%E3%81%86%E3%82%84%E3%81%A3%E3%81%A6%E3%81%84%E3%82%8B%E3%81%AE%E3%81%8B) (in Japanese).
+[^1]: For an overview, I recommend [An Introduction to Speculative Optimization in V8](https://benediktmeurer.de/2017/12/13/an-introduction-to-speculative-optimization-in-v8/) by Benedikt Meurer.
 
 [^2]: The implementation sets a maximum of 256, but I do not know why that value was chosen. <https://github.com/microsoft/TypeScript/blob/673a5f17d713bdc8c7185f18a9c11e3c4ac5d781/tsc/internal/core/arena.go#L61-L66>
 

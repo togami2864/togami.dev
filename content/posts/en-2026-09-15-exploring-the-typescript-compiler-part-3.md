@@ -79,12 +79,6 @@ One approach was to keep some distance from JavaScript by compiling another lang
 Google's Dart took this approach. Dart is now well known through Flutter, but it was first intended to replace JavaScript. People who had worked on V8 created Dart, and there were plans to put a Dart VM in browsers. In the end, those plans did not succeed.
 
 :::column[Dart's Ambitions]
-It was already known outside Google that the company would announce a new language. Soon after the announcement, an internal document was leaked, showing one of Dart's goals.
-
-The document appears to have been real, but it was a draft, not a company decision. It discussed both replacing JavaScript and the Harmony path that later led to ES6.
-
-[Google May Be Developing “Dart,” a Web Language to Replace JavaScript](https://www.publickey1.jp/blog/11/javascript_6.html) (Japanese)
-
 There was even a preview of Dartium, a version of Chromium with a Dart VM.
 
 [Dart 1.0: A stable SDK for structured web apps](https://blog.chromium.org/2013/11/dart-10-stable-sdk-for-structured-web.html)
@@ -110,14 +104,14 @@ In short, once TypeScript was ready, they wanted the editor team to use it and s
 - Build VS Code with TypeScript.
 - Use VS Code to build both VS Code and TypeScript.
 
-:::column[The Letter About 'Monaco']
+:::column[The Letter From 'Monaco']
 Have you wondered why 'Monaco' appears in quotation marks? There is a story behind it.
 
 Visual Studio Online Monaco was released around 2013 as a lightweight editor service in the browser.
 
-[Visual Studio Online "Monaco"](https://learn.microsoft.com/ja-jp/previous-versions/azure/devops/2013/nov-13-team-services?view=tfs-2017)
+[Visual Studio Online "Monaco"](https://learn.microsoft.com/en-us/previous-versions/azure/devops/2013/nov-13-team-services?view=tfs-2017)
 
-It did not attract many users: apparently it had about 3,000 monthly active users worldwide. Even so, the team received a formal letter from a European country about the name. They dealt with it by putting 'Monaco' in quotation marks. It sounds made up, but it happened.
+It did not attract many users: apparently it had about 3,000 monthly active users worldwide. Even so, the team received a formal letter from a European country about the name. They dealt with it by putting 'Monaco' in quotation marks. It sounds made up, but it happened 🤯
 
 [The Story of VS Code | Official Documentary](https://www.youtube.com/watch?v=hilznKQij7A&t=403s)
 
