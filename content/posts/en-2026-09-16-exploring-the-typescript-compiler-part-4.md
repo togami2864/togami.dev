@@ -166,7 +166,7 @@ First, **parents and children must refer to each other while remaining immutable
 Second, links to parents make structural sharing harder. If we change `4` to `6`, we would like to share the unchanged left side of the tree. With one-way links, we can share everything except the changed node and its ancestors. But if the left subtree also points to its parent, `1 * 2 + 4`, that link must change when we create a new parent. So the unchanged subtree must also be created again.
 
 <figure class="embed-image embed-image-wide figure-scrollable">
-  <img src="/images/posts/2026-09-16-exploring-the-typescript-compiler-part-4/parent-pointer-syntax-trees.svg" alt="Before and after trees with two-way parent-child links; changing 4 to 6 also creates new nodes for unchanged parts" />
+  <img src="/images/posts/2026-09-16-exploring-the-typescript-compiler-part-4/parent-pointer-syntax-trees-en.svg" alt="Before and after trees with two-way parent-child links; changing 4 to 6 also creates new nodes for unchanged parts" />
   <figcaption>Even unchanged nodes must be created again</figcaption>
 </figure>
 

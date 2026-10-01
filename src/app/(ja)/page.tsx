@@ -78,7 +78,11 @@ export async function HomeContent({ locale }: { locale: "ja" | "en" }) {
           <div className={styles.introContent}>
             <div className={styles.introText}>
               <h1 className={styles.greeting}>Hello 👋</h1>
-              <p className={styles.bio}>I'm togami, a software engineer based in Tokyo.</p>
+              <p className={styles.bio}>
+                I'm togami, a software engineer based in Tokyo. I'm passionate about
+                developer tooling, CI/CD, and compilers, with a focus on improving
+                developer experience.
+              </p>
               <div className={styles.social}>
                 {socialLinks.map((link) => (
                   <a
